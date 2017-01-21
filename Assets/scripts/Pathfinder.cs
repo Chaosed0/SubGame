@@ -8,15 +8,19 @@ public class Pathfinder : MonoBehaviour {
     private bool isPathing = false;
     private bool isSlowed = false;
     private Vector2[] path;
+    private Vector2 destination;
 
     public float moveSpeed = 0.5f;
     public float slowMoveSpeed = 0.5f;
     public int unitId = 0;
     public PlayerInput playerInput;
+    public Level level;
 
     public UnityEvent onPathFinished = new UnityEvent(); 
+    public UnityEvent onPathStarted = new UnityEvent();
 
 	void Start () {
+        level.onMapChanged.AddListener(OnRepathNeeded);
 	}
 
 	void Update () {
@@ -25,10 +29,29 @@ public class Pathfinder : MonoBehaviour {
         }
 	}
 
-    public void StartPathing(Vector2[] path) {
-        this.path = path;
+    public void StartPathing(Vector2 destination) {
+        this.destination = destination;
         this.pathIndex = 0;
         this.isPathing = true;
+
+        level.UpdateOccupancy(destination, this.unitId);
+        path = level.FindPath(this.transform.position, destination);
+
+        if (onPathStarted != null) {
+            onPathStarted.Invoke();
+        }
+    }
+
+    private void OnRepathNeeded() {
+        if (this.isPathing) {
+            // See if our path has been obstructed
+            for (int i = pathIndex; i < path.Length; i++) {
+                if (!level.IsTraversable(path[i])) {
+                    System.Array.Resize(ref path, i);
+                    level.UpdateOccupancy(path[i-1], this.unitId);
+                }
+            }
+        }
     }
 
     private void NavigateToNextPoint() {
@@ -43,6 +66,7 @@ public class Pathfinder : MonoBehaviour {
             this.transform.position = path[pathIndex];
 
             pathIndex++;
+
             if (pathIndex >= path.Length) {
                 isPathing = false;
 
