@@ -8,6 +8,8 @@ public class RadarController : MonoBehaviour {
 
 	public static float maxRadarDistanceFromCenter = 20f;
 
+	float radarTravelSpeed = 10f;
+
 	// Use this for initialization
 	void Start () {
 		
