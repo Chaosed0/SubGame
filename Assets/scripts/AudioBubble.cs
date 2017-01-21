@@ -15,13 +15,13 @@ public class AudioBubble : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
     {
-        totalSound = 0;
+        //totalSound = 0;
 	}
 
     void LateUpdate()
     {
         transform.localScale = new Vector3(totalSound, totalSound, totalSound);
 
-
+        totalSound = 0;
     }
 }
