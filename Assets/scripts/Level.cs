@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Level : MonoBehaviour {
-    private SpriteRenderer[,] levelTiles;
+    private Tile[,] levelTiles;
     private int[,] levelMap = {
         { 1, 1, 1, 0, 0, 1, 1, 1 },
         { 0, 1, 0, 0, 0, 0, 0, 1 },
@@ -14,14 +14,14 @@ public class Level : MonoBehaviour {
 
     // DON'T USE TILE 0
     public Sprite[] tileImages;
-    public SpriteRenderer tilePrefab;
+    public Tile tilePrefab;
     public Vector2 tileSize;
 
     public Vector2 tileScale = new Vector2(2.0f, 2.0f);
     public float pixelsPerUnit = 108.0f;
 
 	void Start () {
-        levelTiles = new SpriteRenderer[levelMap.GetLength(0), levelMap.GetLength(1)];
+        levelTiles = new Tile[levelMap.GetLength(0), levelMap.GetLength(1)];
         // Create child gameobjects for each tile
         for (int y = 0; y < levelMap.GetLength(0); y++) {
             for (int x = 0; x < levelMap.GetLength(1); x++) {
@@ -32,19 +32,78 @@ public class Level : MonoBehaviour {
                         (x * tileSize.x * tileScale.x + tileSize.x * tileScale.x / 2.0f) / pixelsPerUnit + transform.position.x,
                         -(y * tileSize.y * tileScale.y + tileSize.y * tileScale.y / 2.0f) / pixelsPerUnit + transform.position.y,
                         0.0f);
-                    SpriteRenderer sprite = Instantiate<SpriteRenderer>(tilePrefab, position, Quaternion.identity, this.transform);
-                    sprite.transform.localScale = new Vector3(tileScale.x, tileScale.y, 0.0f);
-                    sprite.sprite = tileImg;
-                    sprite.gameObject.name = x + " " + y;
-                    levelTiles[y,x] = sprite;
+                    Tile tile = Instantiate<Tile>(tilePrefab, position, Quaternion.identity, this.transform);
+                    tile.gameObject.name = "tile_" + x + "_" + y;
+                    tile.transform.localScale = new Vector3(tileScale.x, tileScale.y, 0.0f);
+
+                    SpriteRenderer tileSpriteRenderer = tile.GetComponent<SpriteRenderer>();
+                    tileSpriteRenderer.sprite = tileImg;
+                    levelTiles[y,x] = tile;
                 } else {
                     levelTiles[y,x] = null;
                 }
             }
         }
+
+        // Register all pathfinders with the level
+        Pathfinder[] pathfinders = GameObject.FindObjectsOfType<Pathfinder>();
+        for (int i = 0; i < pathfinders.Length; i++) {
+            this.UpdateOccupancy(pathfinders[i].transform.position, pathfinders[i].unitId);
+        }
 	}
 
-    public GameObject TileAtPosition(Vector2 worldPoint) {
+    public void SetTraversable(Vector2 worldPoint, bool traversable) {
+        Vector2 tilePos = WorldToTilePosition(worldPoint);
+        Tile tile = levelTiles[(int)tilePos.y, (int)tilePos.x];
+        if (tile == null) {
+            return;
+        }
+        tile.traversable = !traversable;
+    }
+
+    // Call this when the player selects a tile to move the unit to, to mark that no other
+    // unit should move to that square.
+    public void UpdateOccupancy(Vector2 worldPoint, int unitId) {
+        Tile tile = TileAtPosition(worldPoint);
+        if (tile == null) {
+            Debug.LogError("Tried to move person to null tile");
+            return;
+        }
+        MoveUnit(tile, unitId);
+    }
+
+    public bool IsOccupied(Vector2 worldPoint) {
+        Tile tile = TileAtPosition(worldPoint);
+        if (tile == null) {
+            // It's occupied by water or hull, I guess
+            return true;
+        }
+        return tile.occupyingUnitId >= 0;
+    }
+
+    private void MoveUnit(Tile newTile, int unitId) {
+        Tile currentOccupiedTile = null;
+        for (int y = 0; y < levelTiles.GetLength(0); y++) {
+            for (int x = 0; x < levelTiles.GetLength(1); x++) {
+                if (levelTiles[y,x] != null && 
+                    levelTiles[y,x].occupyingUnitId == unitId) {
+                    currentOccupiedTile = levelTiles[y,x];
+                }
+            }
+        }
+
+        if (currentOccupiedTile != null && currentOccupiedTile != newTile) {
+            // Unit moved from one tile to another
+            currentOccupiedTile.occupyingUnitId = -1;
+            newTile.occupyingUnitId = unitId;
+        } else if (currentOccupiedTile == null) {
+            // Unit doesn't exist yet
+            newTile.occupyingUnitId = unitId;
+        }
+        // Else is unit on same tile
+    }
+
+    public Tile TileAtPosition(Vector2 worldPoint) {
         return TileAtTileCoords(WorldToTilePosition(worldPoint));
     }
 
@@ -151,7 +210,7 @@ public class Level : MonoBehaviour {
         return new Vector2(worldX, worldY);
     }
 
-    private GameObject TileAtTileCoords(Vector2 tilePosition) {
+    private Tile TileAtTileCoords(Vector2 tilePosition) {
         int tileX = (int)tilePosition.x;
         int tileY = (int)tilePosition.y;
 
@@ -161,7 +220,7 @@ public class Level : MonoBehaviour {
             tileX < levelTiles.GetLength(1) &&
             levelTiles[tileY, tileX] != null)
         {
-            return levelTiles[tileY, tileX].gameObject;
+            return levelTiles[tileY, tileX];
         }
 
         return null;
