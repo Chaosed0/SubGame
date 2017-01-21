@@ -12,6 +12,9 @@ public class SmallMonsterScript : MonoBehaviour {
 
 	private float lifeTime = 60f;
 
+	public GameObject DetectedImagePrefab;
+
+	private float afterImageFadeTime = 2f;
 
 	// Use this for initialization
 	void Start () {
@@ -42,4 +45,37 @@ public class SmallMonsterScript : MonoBehaviour {
 	{
 		direction = newDirection.normalized;
 	}
+
+
+	public void DropDetectedImage(float remainingFadeTime)
+	{
+		GameObject newAfterImage = Instantiate (DetectedImagePrefab, transform.position, transform.rotation);
+
+		//Slowly count down alpha
+		StartCoroutine(DecreaseAlphaCoroutine(newAfterImage.GetComponent<SpriteRenderer>(), remainingFadeTime));
+	}
+
+	IEnumerator DecreaseAlphaCoroutine( SpriteRenderer sprite, float lifeTime )
+	{
+		Color newColor = sprite.color;
+
+		newColor.a = 1;
+		sprite.color = newColor;
+
+		while (lifeTime > 0 ) 
+		{
+
+			lifeTime -= Time.deltaTime;
+
+			newColor.a = lifeTime / RadarPulse.maxLifeTime;
+
+			sprite.color = newColor;
+
+			yield return new WaitForEndOfFrame ();
+		}
+
+		Destroy (sprite.gameObject);
+	}
+
+
 }
