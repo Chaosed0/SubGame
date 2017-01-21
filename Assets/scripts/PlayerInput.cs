@@ -37,13 +37,11 @@ public class PlayerInput : MonoBehaviour {
         Vector3 worldPoint = camera.ScreenToWorldPoint(mousePosition);
         if (selectedPathfinder != null) {
             // Try to move the last selected thing to the selected tile
-            Tile tile = level.TileAtPosition(new Vector2(worldPoint.x, worldPoint.y));
+            Tile tile = level.TileAtWorldPosition(new Vector2(worldPoint.x, worldPoint.y));
 
             // Make sure the tile is valid
             if (tile != null && tile.CanUnitMoveHere(selectedPathfinder.unitId)) {
-                Vector2[] path = level.FindPath(selectedPathfinder.transform.position, worldPoint);
-                selectedPathfinder.StartPathing(path);
-                level.UpdateOccupancy(worldPoint, selectedPathfinder.unitId);
+                selectedPathfinder.StartPathing(worldPoint);
             }
         }
     }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Level : MonoBehaviour {
     private Tile[,] levelTiles;
@@ -12,7 +13,7 @@ public class Level : MonoBehaviour {
         { 1, 1, 1, 1, 1, 1, 1, 1 },
     };
 
-    Dictionary<int, SpriteRenderer> tileOverlays = new Dictionary<int, SpriteRenderer>();
+    private Dictionary<int, SpriteRenderer> tileOverlays = new Dictionary<int, SpriteRenderer>();
 
     // DON'T USE TILE 0
     public Sprite[] tileImages;
@@ -22,6 +23,9 @@ public class Level : MonoBehaviour {
 
     public Vector2 tileScale = new Vector2(2.0f, 2.0f);
     public float pixelsPerUnit = 108.0f;
+
+    // Invoked when the map changes, e.g. when there's a hull breach
+    public UnityEvent onMapChanged = new UnityEvent(); 
 
 	void Start () {
         levelTiles = new Tile[levelMap.GetLength(0), levelMap.GetLength(1)];
@@ -75,31 +79,65 @@ public class Level : MonoBehaviour {
         if (tile == null) {
             return;
         }
-        tile.traversable = traversable;
 
-        int tileId = TilePositionToTileId(tilePos);
-        if (!traversable) {
-            if (!tileOverlays.ContainsKey(tileId)) {
-                Vector3 position = positionForTileGameObject((int)tilePos.x, (int)tilePos.y);
-                Tile overlay = Instantiate<Tile>(tilePrefab, position, Quaternion.identity, this.transform);
-                SpriteRenderer renderer = overlay.GetComponent<SpriteRenderer>();
-                renderer.sprite = breachOverlay;
-                renderer.transform.localScale = tileScale;
-                tileOverlays.Add(tileId, renderer);
+        if (tile.traversable != traversable) {
+            tile.traversable = traversable;
+
+            if (onMapChanged != null) {
+                onMapChanged.Invoke();
             }
-        } else {
-            if (tileOverlays.ContainsKey(tileId)) {
-                SpriteRenderer renderer = tileOverlays[tileId];
-                tileOverlays.Remove(tileId);
-                Destroy(renderer);
+
+            int tileId = TilePositionToTileId(tilePos);
+            if (!traversable) {
+                if (!tileOverlays.ContainsKey(tileId)) {
+                    Vector3 position = positionForTileGameObject((int)tilePos.x, (int)tilePos.y);
+                    Tile overlay = Instantiate<Tile>(tilePrefab, position, Quaternion.identity, this.transform);
+                    SpriteRenderer renderer = overlay.GetComponent<SpriteRenderer>();
+                    renderer.sprite = breachOverlay;
+                    renderer.transform.localScale = tileScale;
+                    tileOverlays.Add(tileId, renderer);
+                }
+            } else {
+                if (tileOverlays.ContainsKey(tileId)) {
+                    SpriteRenderer renderer = tileOverlays[tileId];
+                    tileOverlays.Remove(tileId);
+                    Destroy(renderer);
+                }
             }
         }
+    }
+
+    public Tile getAdjacentUntraversableTile(Vector2 worldPoint) {
+        Vector2 tilePosition = WorldToTilePosition(worldPoint);
+
+        Vector2 rightTilePosition = new Vector2(tilePosition.x+1, tilePosition.y);
+        Vector2 leftTilePosition = new Vector2(tilePosition.x-1, tilePosition.y);
+        Vector2 downTilePosition = new Vector2(tilePosition.x, tilePosition.y+1);
+        Vector2 upTilePosition = new Vector2(tilePosition.x, tilePosition.y-1);
+        Tile rightTile = TileAtTileCoords(rightTilePosition);
+        Tile leftTile = TileAtTileCoords(leftTilePosition);
+        Tile downTile = TileAtTileCoords(downTilePosition);
+        Tile upTile = TileAtTileCoords(upTilePosition);
+
+        if (rightTile != null && !rightTile.traversable) {
+            return rightTile;
+        }
+        if (leftTile != null && !leftTile.traversable) {
+            return leftTile;
+        }
+        if (downTile != null && !downTile.traversable) {
+            return downTile;
+        }
+        if (upTile != null && !upTile.traversable) {
+            return upTile;
+        }
+        return null;
     }
 
     // Call this when the player selects a tile to move the unit to, to mark that no other
     // unit should move to that square.
     public void UpdateOccupancy(Vector2 worldPoint, int unitId) {
-        Tile tile = TileAtPosition(worldPoint);
+        Tile tile = TileAtWorldPosition(worldPoint);
         if (tile == null) {
             Debug.LogError("Tried to move person to null tile");
             return;
@@ -108,7 +146,7 @@ public class Level : MonoBehaviour {
     }
 
     public bool IsOccupied(Vector2 worldPoint) {
-        Tile tile = TileAtPosition(worldPoint);
+        Tile tile = TileAtWorldPosition(worldPoint);
         if (tile == null) {
             // It's occupied by water or hull, I guess
             return true;
@@ -138,7 +176,7 @@ public class Level : MonoBehaviour {
         // Else is unit on same tile
     }
 
-    public Tile TileAtPosition(Vector2 worldPoint) {
+    public Tile TileAtWorldPosition(Vector2 worldPoint) {
         return TileAtTileCoords(WorldToTilePosition(worldPoint));
     }
 
