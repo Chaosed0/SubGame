@@ -9,11 +9,14 @@ public class Level : MonoBehaviour {
         { 0, 1, 0, 0, 0, 0, 0, 1 },
         { 1, 1, 1, 1, 1, 1, 1, 1 },
         { 1, 0, 0, 0, 1, 0, 0, 1 },
-        { 1, 1, 1, 0, 1, 1, 1, 1 },
+        { 1, 1, 1, 1, 1, 1, 1, 1 },
     };
+
+    Dictionary<int, SpriteRenderer> tileOverlays = new Dictionary<int, SpriteRenderer>();
 
     // DON'T USE TILE 0
     public Sprite[] tileImages;
+    public Sprite breachOverlay;
     public Tile tilePrefab;
     public Vector2 tileSize;
 
@@ -22,16 +25,14 @@ public class Level : MonoBehaviour {
 
 	void Start () {
         levelTiles = new Tile[levelMap.GetLength(0), levelMap.GetLength(1)];
+
         // Create child gameobjects for each tile
         for (int y = 0; y < levelMap.GetLength(0); y++) {
             for (int x = 0; x < levelMap.GetLength(1); x++) {
                 int tileId = levelMap[y,x];
                 if (tileId > 0 && tileId < tileImages.Length) {
                     Sprite tileImg = tileImages[tileId];
-                    Vector3 position = new Vector3(
-                        (x * tileSize.x * tileScale.x + tileSize.x * tileScale.x / 2.0f) / pixelsPerUnit + transform.position.x,
-                        -(y * tileSize.y * tileScale.y + tileSize.y * tileScale.y / 2.0f) / pixelsPerUnit + transform.position.y,
-                        0.0f);
+                    Vector3 position = positionForTileGameObject(x, y);
                     Tile tile = Instantiate<Tile>(tilePrefab, position, Quaternion.identity, this.transform);
                     tile.gameObject.name = "tile_" + x + "_" + y;
                     tile.transform.localScale = new Vector3(tileScale.x, tileScale.y, 0.0f);
@@ -52,13 +53,47 @@ public class Level : MonoBehaviour {
         }
 	}
 
+    private Vector3 positionForTileGameObject(int tileX, int tileY) {
+        return new Vector3(
+            (tileX * tileSize.x * tileScale.x + tileSize.x * tileScale.x / 2.0f) / pixelsPerUnit + transform.position.x,
+            -(tileY * tileSize.y * tileScale.y + tileSize.y * tileScale.y / 2.0f) / pixelsPerUnit + transform.position.y,
+            0.0f);
+    }
+
+    public bool IsTraversable(Vector2 worldPoint) {
+        Vector2 tilePos = WorldToTilePosition(worldPoint);
+        Tile tile = levelTiles[(int)tilePos.y, (int)tilePos.x];
+        if (tile == null) {
+            return false;
+        }
+        return tile.traversable;
+    }
+
     public void SetTraversable(Vector2 worldPoint, bool traversable) {
         Vector2 tilePos = WorldToTilePosition(worldPoint);
         Tile tile = levelTiles[(int)tilePos.y, (int)tilePos.x];
         if (tile == null) {
             return;
         }
-        tile.traversable = !traversable;
+        tile.traversable = traversable;
+
+        int tileId = TilePositionToTileId(tilePos);
+        if (!traversable) {
+            if (!tileOverlays.ContainsKey(tileId)) {
+                Vector3 position = positionForTileGameObject((int)tilePos.x, (int)tilePos.y);
+                Tile overlay = Instantiate<Tile>(tilePrefab, position, Quaternion.identity, this.transform);
+                SpriteRenderer renderer = overlay.GetComponent<SpriteRenderer>();
+                renderer.sprite = breachOverlay;
+                renderer.transform.localScale = tileScale;
+                tileOverlays.Add(tileId, renderer);
+            }
+        } else {
+            if (tileOverlays.ContainsKey(tileId)) {
+                SpriteRenderer renderer = tileOverlays[tileId];
+                tileOverlays.Remove(tileId);
+                Destroy(renderer);
+            }
+        }
     }
 
     // Call this when the player selects a tile to move the unit to, to mark that no other
@@ -227,6 +262,10 @@ public class Level : MonoBehaviour {
     }
 
     private bool isTilePassable(Vector2 tilePosition) {
-        return TileAtTileCoords(tilePosition) != null;
+        Tile tile = TileAtTileCoords(tilePosition);
+        if (tile == null) {
+            return false;
+        }
+        return tile.traversable;
     }
 }

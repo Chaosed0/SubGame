@@ -40,6 +40,8 @@ public class Pathfinder : MonoBehaviour {
 
         Vector2 newPosition = new Vector2(this.transform.position.x, this.transform.position.y);
         if ((path[pathIndex] - newPosition).magnitude < 0.05f) {
+            this.transform.position = path[pathIndex];
+
             pathIndex++;
             if (pathIndex >= path.Length) {
                 isPathing = false;

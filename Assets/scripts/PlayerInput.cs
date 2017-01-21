@@ -12,11 +12,17 @@ public class PlayerInput : MonoBehaviour {
 	}
 
 	void Update () {
-        bool click = Input.GetButtonDown("Fire1");
+        bool select = Input.GetButtonDown("Select");
+        bool testselect = Input.GetButtonDown("TestSelect");
+        Vector3 mousePosition = Input.mousePosition;
 
-        if (click) {
-            Vector3 mousePosition = Input.mousePosition;
+        if (select) {
             this.HandleMouseClick(mousePosition);
+        }
+
+        if (testselect) {
+            Vector3 worldPoint = camera.ScreenToWorldPoint(mousePosition);
+            level.SetTraversable(worldPoint, !level.IsTraversable(worldPoint));
         }
     }
 
