@@ -5,9 +5,11 @@ using UnityEngine;
 public class Level : MonoBehaviour {
     private SpriteRenderer[,] levelTiles;
     private int[,] levelMap = {
-        { 0, 0, 1, 1, 1, 1 },
-        { 0, 1, 1, 1, 1, 0 },
-        { 1, 1, 1, 1, 0, 0 },
+        { 1, 1, 1, 0, 0, 1, 1, 1 },
+        { 0, 1, 0, 0, 0, 0, 0, 1 },
+        { 1, 1, 1, 1, 1, 1, 1, 1 },
+        { 1, 0, 0, 0, 1, 0, 0, 1 },
+        { 1, 1, 1, 0, 1, 1, 1, 1 },
     };
 
     // DON'T USE TILE 0
@@ -144,7 +146,7 @@ public class Level : MonoBehaviour {
         float localX = (tilePosition.x + 0.5f) * tileSize.x * tileScale.x;
         float localY = (tilePosition.y + 0.5f) * tileSize.y * tileScale.y;
         float worldX = localX / pixelsPerUnit + this.transform.position.x;
-        float worldY = localY / pixelsPerUnit + this.transform.position.y;
+        float worldY = - localY / pixelsPerUnit + this.transform.position.y;
 
         return new Vector2(worldX, worldY);
     }

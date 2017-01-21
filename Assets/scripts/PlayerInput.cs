@@ -5,9 +5,7 @@ using UnityEngine;
 public class PlayerInput : MonoBehaviour {
     public Level level;
     public Camera camera;
-
-    bool hasSelected = false;
-    private Vector2 selectedPosition;
+    public Pathfinder testPathfinder;
 
 	void Start () {
 	}
@@ -24,14 +22,8 @@ public class PlayerInput : MonoBehaviour {
             {
                 GameObject tile = level.TileAtPosition(new Vector2(worldPoint.x, worldPoint.y));
                 if (tile != null) {
-                    if (hasSelected == false) {
-                        selectedPosition = worldPoint;
-                        hasSelected = true;
-                        Debug.Log(worldPoint);
-                    } else {
-                        hasSelected = false;
-                        Debug.Log(level.FindPath(selectedPosition, worldPoint));
-                    }
+                    Vector2[] path = level.FindPath(testPathfinder.transform.position, worldPoint);
+                    testPathfinder.StartPathing(path);
                 }
             }
         }
