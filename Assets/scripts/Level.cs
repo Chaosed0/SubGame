@@ -29,8 +29,8 @@ public class Level : MonoBehaviour {
                 if (tileId > 0 && tileId < tileImages.Length) {
                     Sprite tileImg = tileImages[tileId];
                     Vector3 position = new Vector3(
-                        (x * tileSize.x * tileScale.x + tileSize.x * tileScale.x / 2.0f) / pixelsPerUnit,
-                        -(y * tileSize.y * tileScale.y + tileSize.y * tileScale.y / 2.0f) / pixelsPerUnit,
+                        (x * tileSize.x * tileScale.x + tileSize.x * tileScale.x / 2.0f) / pixelsPerUnit + transform.position.x,
+                        -(y * tileSize.y * tileScale.y + tileSize.y * tileScale.y / 2.0f) / pixelsPerUnit + transform.position.y,
                         0.0f);
                     SpriteRenderer sprite = Instantiate<SpriteRenderer>(tilePrefab, position, Quaternion.identity, this.transform);
                     sprite.transform.localScale = new Vector3(tileScale.x, tileScale.y, 0.0f);
