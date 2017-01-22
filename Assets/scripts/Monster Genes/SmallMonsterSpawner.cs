@@ -29,7 +29,7 @@ public class SmallMonsterSpawner : MonoBehaviour {
 
 		if(Input.GetKeyDown(KeyCode.A))
 		{
-			SpawnMonstersInTime (1, 5);
+			SpawnMonstersInTime (1, 10);
 		}
 	}
 

@@ -10,6 +10,9 @@ public class EngineStationController : MonoBehaviour {
     public bool engineOn;
     public AudioSource engineSound;
 
+    public Light[] normalLights;
+    public Light[] lowLights;
+
 	// Use this for initialization
 	void Start () 
     {
@@ -31,12 +34,22 @@ public class EngineStationController : MonoBehaviour {
             {
                 engineSound.mute = true;
                 engineSound.gameObject.GetComponent<AddsToAudioBubble>().makingSound = false;
+                for (int i = 0; i < normalLights.Length; i++)
+                {
+                    normalLights[i].enabled = false;
+                    lowLights[i].enabled = true;
+                }
                 engineOn = false;
             }
             else
             {
                 engineSound.mute = false;
                 engineSound.gameObject.GetComponent<AddsToAudioBubble>().makingSound = true;
+                for (int i = 0; i < normalLights.Length; i++)
+                {
+                    normalLights[i].enabled = true;
+                    lowLights[i].enabled = false;
+                }
                 engineOn = true;
             }
         }

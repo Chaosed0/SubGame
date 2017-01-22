@@ -14,7 +14,7 @@ public class SmallMonsterScript : MonoBehaviour {
 
 	public GameObject DetectedImagePrefab;
 
-	private float afterImageFadeTime = 2f;
+	private float afterImageFadeTime = 0.5f;
 
 	private bool hasTriggeredAttack = false;
 
@@ -54,7 +54,8 @@ public class SmallMonsterScript : MonoBehaviour {
 		GameObject newAfterImage = Instantiate (DetectedImagePrefab, transform.position, transform.rotation);
 
 		//Slowly count down alpha
-		StartCoroutine(DecreaseAlphaCoroutine(newAfterImage.GetComponent<SpriteRenderer>(), remainingFadeTime));
+		//StartCoroutine(DecreaseAlphaCoroutine(newAfterImage.GetComponent<SpriteRenderer>(), remainingFadeTime));
+        StartCoroutine(DecreaseAlphaCoroutine(newAfterImage.GetComponent<SpriteRenderer>(), 1));
 
 		//Put red dot on UI
 		RadarController.mainRadarController.CreateRedDot(transform.position);
@@ -72,7 +73,7 @@ public class SmallMonsterScript : MonoBehaviour {
 
 			lifeTime -= Time.deltaTime;
 
-			newColor.a = lifeTime / RadarPulse.maxLifeTime;
+            newColor.a = lifeTime / 1;//RadarPulse.maxLifeTime;
 
 			sprite.color = newColor;
 
