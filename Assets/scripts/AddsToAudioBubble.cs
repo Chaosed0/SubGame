@@ -29,6 +29,8 @@ public class AddsToAudioBubble : MonoBehaviour {
     public GameObject myPanicSound;
     public GameObject[] panicSoundsToChooseFrom;
 
+	public SpriteRenderer makingSoundSprite;
+
 	// Use this for initialization
 	void Start () 
     {
@@ -39,11 +41,14 @@ public class AddsToAudioBubble : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
+		if (makingSoundSprite != null)
+			makingSoundSprite.enabled = false;
+
         if (constant == true)
         {
             if (makingSound == true)
             {
-                bubble.totalSound += amount;// * Random.Range(0.9f, 1.1f);
+				AddToBubbleTotalSound(amount);// * Random.Range(0.9f, 1.1f);
             }
 
             if (myRepairSound != null)
@@ -51,7 +56,7 @@ public class AddsToAudioBubble : MonoBehaviour {
                 if (makingRepairSound == true)
                 {
                     myRepairSound.mute = false;
-                    bubble.totalSound += repairAmount;
+					AddToBubbleTotalSound(repairAmount);
                 }
                 else
                 {
@@ -64,7 +69,7 @@ public class AddsToAudioBubble : MonoBehaviour {
                 if (makingRecRoomSound == true)
                 {
                     myRecRoomSound.mute = false;
-                    bubble.totalSound += recRoomAmount;
+					AddToBubbleTotalSound(recRoomAmount);
                 }
                 else
                 {
@@ -84,7 +89,7 @@ public class AddsToAudioBubble : MonoBehaviour {
                 //Instantiate(myPanicSound, transform.position, Quaternion.identity);
                 //myPanicSound.mute = false;
 
-                bubble.totalSound += panicAmount;
+				AddToBubbleTotalSound(panicAmount);
 
             }
             else
@@ -94,6 +99,14 @@ public class AddsToAudioBubble : MonoBehaviour {
             
         }
     }
+
+	void AddToBubbleTotalSound(float additionalSound)
+	{
+		if (makingSoundSprite != null)
+			makingSoundSprite.enabled = true;
+		
+		bubble.totalSound += additionalSound;
+	}
 
     void LateUpdate()
     {

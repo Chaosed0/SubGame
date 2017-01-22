@@ -24,7 +24,13 @@ public class AudioBubble : MonoBehaviour {
 
     void LateUpdate()
     {
-		transform.localScale = Vector3.Lerp(transform.localScale, new Vector3(totalSound + minScale, totalSound + minScale, totalSound + minScale), 0.1f);
+
+		Vector3 targetLocalScale = new Vector3 (totalSound + minScale, totalSound + minScale, totalSound + minScale);
+		//add in some randomness
+		targetLocalScale *= Random.Range(0.9f,1.1f);
+
+		//Lerp
+		transform.localScale = Vector3.Lerp(transform.localScale, targetLocalScale, 0.1f);
         bubbleTriggerScript.bubblesTotalAudio = totalSound;
 
         totalSound = 0;
