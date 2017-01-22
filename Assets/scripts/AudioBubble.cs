@@ -20,7 +20,7 @@ public class AudioBubble : MonoBehaviour {
 
     void LateUpdate()
     {
-        transform.localScale = new Vector3(totalSound, totalSound, totalSound);
+		transform.localScale = Vector3.Lerp(transform.localScale, new Vector3(totalSound, totalSound, totalSound), 0.1f);
 
         totalSound = 0;
     }
