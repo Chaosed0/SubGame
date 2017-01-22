@@ -226,11 +226,12 @@ public class Level : MonoBehaviour {
 
     public Vector2[] FindPath(Vector2 start, Vector2 finish)
     {
+        Vector2 localStart = new Vector2(start.x - transform.position.x, start.y - transform.position.y);
         Vector2 startTile = WorldToTilePosition(start);
         Vector2 finishTile = WorldToTilePosition(finish);
 
         if (!isTilePassable(startTile)) {
-            return new Vector2[] { start };
+            return new Vector2[] { localStart };
         }
 
         List<Vector2> queue = new List<Vector2>();
@@ -276,7 +277,7 @@ public class Level : MonoBehaviour {
 
         if (!previousVisited.ContainsKey(TilePositionToTileId(finishTile))) {
             // Didn't find a path
-            return new Vector2[] { start };
+            return new Vector2[] { localStart };
         }
 
         // Reconstruct the path from the finish
