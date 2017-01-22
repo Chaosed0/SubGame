@@ -10,11 +10,13 @@ public class SmallMonsterScript : MonoBehaviour {
 
 	public float speed; 
 
-	private float lifeTime = 60f;
+	private float lifeTime = 25f;
 
 	public GameObject DetectedImagePrefab;
 
 	private float afterImageFadeTime = 2f;
+
+	private bool hasTriggeredAttack = false;
 
 	// Use this for initialization
 	void Start () {
@@ -80,5 +82,58 @@ public class SmallMonsterScript : MonoBehaviour {
 		Destroy (sprite.gameObject);
 	}
 
+	public void TriggerToAttack(Vector3 target)
+	{
+		if (hasTriggeredAttack)
+			return;
 
+		hasTriggeredAttack = true;
+
+		//appear
+		GetComponent<SpriteRenderer>().enabled = true;
+
+		//Change direction to ship middle
+		speed *=.1f;
+		StartCoroutine(StartAttack (target - transform.position, 20, target));
+
+
+		/*
+		SetDirection(target-transform.position);
+		direction.z = 0f;
+
+		speed *= 10f;
+
+*/
+	}
+
+	IEnumerator StartAttack(Vector3 targetDirection, float targetSpeed, Vector3 target)
+	{
+		float lerpTime = 1f;
+
+		while (lerpTime > 0) 
+		{
+			lerpTime -= Time.deltaTime;
+			
+			//speed = Mathf.Lerp (speed, targetSpeed, 0.05f);
+		
+			SetDirection( Vector3.Lerp (direction, targetDirection, 0.05f)  );
+			direction.z = 0;
+
+			yield return new WaitForEndOfFrame ();
+		}
+
+		speed = targetSpeed;
+
+		//Check if close enough, if yes trigger hull breach
+		while(Vector3.Distance(target, transform.position) < 10f )
+		{
+			yield return new WaitForEndOfFrame ();
+		}
+
+		//Trigger hull breach
+		Tile randomTile = Level.levelReference.getRandomTraversableTile();
+		if (randomTile == null)
+			Debug.Log ("Adsfasdf");
+		Level.levelReference.SetTraversable (randomTile.transform.position, false);
+	}
 }
