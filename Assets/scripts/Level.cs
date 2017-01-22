@@ -289,10 +289,10 @@ public class Level : MonoBehaviour {
             tilePath.Add(pathTile);
         }
 
-        // Reverse tilePath and convert to world coords
+        // Reverse tilePath and convert to local coords
         List<Vector2> worldPath = new List<Vector2>();
         for (int i = tilePath.Count - 1; i >= 0; i--) {
-            worldPath.Add(TileToWorldPosition(tilePath[i]));
+            worldPath.Add(TileToLocalPosition(tilePath[i]));
         }
         
         return worldPath.ToArray();
@@ -315,10 +315,16 @@ public class Level : MonoBehaviour {
 
     // Note, returns position centered on tile
     private Vector2 TileToWorldPosition(Vector2 tilePosition) {
+        Vector2 localPosition = TileToLocalPosition(tilePosition);
+        return new Vector2(localPosition.x + this.transform.position.x, localPosition.y + this.transform.position.y);
+    }
+
+    // Note, returns position centered on tile
+    private Vector2 TileToLocalPosition(Vector2 tilePosition) {
         float localX = (tilePosition.x + 0.5f) * tileSize.x * tileScale.x;
         float localY = (tilePosition.y + 0.5f) * tileSize.y * tileScale.y;
-        float worldX = localX / pixelsPerUnit + this.transform.position.x;
-        float worldY = - localY / pixelsPerUnit + this.transform.position.y;
+        float worldX = localX / pixelsPerUnit;
+        float worldY = - localY / pixelsPerUnit;
 
         return new Vector2(worldX, worldY);
     }
