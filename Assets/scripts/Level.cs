@@ -50,7 +50,7 @@ public class Level : MonoBehaviour {
 	void Start () {
         levelTiles = new Tile[levelMap.GetLength(0), levelMap.GetLength(1)];
 		levelReference = this;
-
+	    
         // Create child gameobjects for each tile
         for (int y = 0; y < levelMap.GetLength(0); y++) {
             for (int x = 0; x < levelMap.GetLength(1); x++) {
