@@ -93,6 +93,16 @@ public class Unit : MonoBehaviour {
         state = State.Moving;
     }
 
+    public bool EatFood(float destressAmount)
+    {
+        if (stress > 0)
+        {
+            stress = Mathf.Max(stress - destressAmount, 0.0f);
+            return true;
+        }
+        return false;
+    }
+
     private void OnPathFinished() {
         if (stress >= panicThreshold) {
             state = State.Panicked;

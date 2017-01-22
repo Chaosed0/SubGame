@@ -24,9 +24,13 @@ public class UnitStats : MonoBehaviour {
     private float repair = 1.0f;
     [SerializeField]
     private float sanity = 1.0f;
+    [SerializeField]
+    private float cooking = 1.0f;
+
 
     public float Steering { get { return steering; } }
     public float Sonar { get { return sonar; } }
     public float Repair { get { return repair; } }
     public float Sanity { get { return sanity; } }
+    public float Cooking { get { return cooking; } }
 }
