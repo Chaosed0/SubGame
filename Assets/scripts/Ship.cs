@@ -63,7 +63,6 @@ public class Ship : MonoBehaviour {
 
     private void OnStationEntered(Unit unit, TileType type) {
         if (type == TileType.Pilot) {
-            Debug.Log("Enter" + type);
             // TODO: Check if it's a specialist
             moveFactor = 1.0f;
         }
@@ -71,7 +70,6 @@ public class Ship : MonoBehaviour {
 
     private void OnStationExited(Unit unit, TileType type) {
         if (type == TileType.Pilot) {
-            Debug.Log("Exit" + type);
             moveFactor = 0.0f;
         }
     }
