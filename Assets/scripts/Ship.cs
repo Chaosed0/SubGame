@@ -17,6 +17,8 @@ public class Ship : MonoBehaviour {
     public StationEvent onStationEntered = new StationEvent();
     public StationEvent onStationExited = new StationEvent();
 
+    //public bool movingDown;
+
     public float depth {
         get { return _depth; }
     }
@@ -35,7 +37,12 @@ public class Ship : MonoBehaviour {
 
     void Update () {
         _depth += moveSpeed * moveFactor * Time.deltaTime;
-        MoveShipDown(moveSpeed);
+
+        //if (movingDown == true)
+        if(moveFactor > 0)
+        {
+            MoveShipDown(moveSpeed);
+        }
 
     }
 

@@ -63,7 +63,7 @@ public class Unit : MonoBehaviour {
             }
         }
 
-        Debug.Log(stress);
+        //Debug.Log(stress);
 
         if (state == State.Repairing) {
             breachBeingRepaired.doWorkOnBreach(unitStats.Repair);
