@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof (Pathfinder))]
 public class Unit : MonoBehaviour {
@@ -10,9 +11,15 @@ public class Unit : MonoBehaviour {
     private Breach breachBeingRepaired = null;
 
     public float ambientStressGain = 0.1f;
-    public float restingStressLoss = 0.25f;
+    public float restingStressLoss = 0.5f;
+    public float panickingStressLoss = 10.0f;
+    public float panicThreshold = 100.0f;
+    public float panicOffThreshold = 50.0f;
 
     public float timeToRepair = 5.0f;
+
+    public UnityEvent onPanicked = new UnityEvent();
+    public UnityEvent onUnpanicked = new UnityEvent();
 
     public enum State {
         Idling,
@@ -20,6 +27,7 @@ public class Unit : MonoBehaviour {
         Repairing,
         Operating,
         Resting,
+        Panicked,
     }
 
 	void Start () {
@@ -29,11 +37,30 @@ public class Unit : MonoBehaviour {
     }
 
     void Update() {
-        if (state == State.Resting) {
+        if (state != State.Panicked && stress >= panicThreshold) {
+            // Panic!
+            pathfinder.onPathFinished.Invoke();
+        } else if (state == State.Panicked) {
             stress -= restingStressLoss * Time.deltaTime;
+            if (stress <= panicOffThreshold) {
+                // unpanic...
+                state = State.Idling;
+                if (pathfinder.onPathFinished != null) {
+                    pathfinder.onPathFinished.Invoke();
+                }
+                if (onUnpanicked != null) {
+                    onUnpanicked.Invoke();
+                }
+            }
         } else {
-            stress += ambientStressGain * Time.deltaTime;
+            if (state == State.Resting) {
+                stress -= restingStressLoss * Time.deltaTime;
+            } else {
+                stress += ambientStressGain * Time.deltaTime;
+            }
         }
+
+        Debug.Log(stress);
 
         if (state == State.Repairing) {
             breachBeingRepaired.doWorkOnBreach();
@@ -42,6 +69,10 @@ public class Unit : MonoBehaviour {
 
     public bool IsOperating() {
         return state == State.Operating;
+    }
+
+    public bool IsPanicked() {
+        return state == State.Panicked;
     }
 
     private void OnBreachFixed() {
@@ -56,6 +87,14 @@ public class Unit : MonoBehaviour {
     }
 
     private void OnPathFinished() {
+        if (stress >= panicThreshold) {
+            state = State.Panicked;
+            if (onPanicked != null) {
+                onPanicked.Invoke();
+            }
+            return;
+        }
+
         Breach repairCandidate = pathfinder.level.getAdjacentUntraversableTile(this.transform.position);
         if (repairCandidate != null) {
             breachBeingRepaired = repairCandidate;
