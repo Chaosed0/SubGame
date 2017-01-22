@@ -23,8 +23,8 @@ public class EngineStationController : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
     {
-        ship.onStationEntered.AddListener (OnEnterEffect);//Function with unit and tile type
-        ship.onStationExited.AddListener (OnExitEffect);
+        //ship.onStationEntered.AddListener (OnEnterEffect);
+        //ship.onStationExited.AddListener (OnExitEffect);
 	}
 	
 	// Update is called once per frame
@@ -33,37 +33,44 @@ public class EngineStationController : MonoBehaviour {
 	    	
 	}
 
-    void OnEnterEffect(Unit unit, TileType type)
+    //public void OnEnterEffect(Unit unit, TileType type)
+    public void SetEngineOn(bool engineOn)
     {
-        if (type == TileType.Engine)
-        {
-            if (engineOn == true)
-            {
-                engineSound.mute = true;
-                engineSound.gameObject.GetComponent<AddsToAudioBubble>().makingSound = false;
-                for (int i = 0; i < normalLights.Length; i++)
-                {
-                    normalLights[i].enabled = false;
-                    lowLights[i].enabled = true;
-                }
-
-                ShutDownSystems();
-                engineOn = false;
-            }
-            else
-            {
-                engineSound.mute = false;
-                engineSound.gameObject.GetComponent<AddsToAudioBubble>().makingSound = true;
-                for (int i = 0; i < normalLights.Length; i++)
-                {
-                    normalLights[i].enabled = true;
-                    lowLights[i].enabled = false;
-                }
-
-                TurnOnSystems();
-                engineOn = true;
-            }
+        if (this.engineOn == engineOn) {
+            return;
         }
+
+        this.engineOn = engineOn;
+        if (engineOn == true)
+        {
+            engineSound.mute = true;
+            engineSound.gameObject.GetComponent<AddsToAudioBubble>().makingSound = false;
+            for (int i = 0; i < normalLights.Length; i++)
+            {
+                normalLights[i].enabled = false;
+                lowLights[i].enabled = true;
+            }
+
+            ShutDownSystems();
+            engineOn = false;
+        }
+        else
+        {
+            engineSound.mute = false;
+            engineSound.gameObject.GetComponent<AddsToAudioBubble>().makingSound = true;
+            for (int i = 0; i < normalLights.Length; i++)
+            {
+                normalLights[i].enabled = true;
+                lowLights[i].enabled = false;
+            }
+
+            TurnOnSystems();
+            engineOn = true;
+        }
+    }
+
+    public bool IsEngineOn() {
+        return engineOn;
     }
 
     void OnExitEffect(Unit unit, TileType type)
