@@ -13,12 +13,13 @@ public class Level : MonoBehaviour {
         { 1, 1, 1, 1, 1, 1, 1, 1 },
     };
 
-    private Dictionary<int, SpriteRenderer> tileOverlays = new Dictionary<int, SpriteRenderer>();
+    private Dictionary<int, Breach> breaches = new Dictionary<int, Breach>();
 
     // DON'T USE TILE 0
     public Sprite[] tileImages;
     public Sprite breachOverlay;
     public Tile tilePrefab;
+    public Breach breachPrefab;
     public Vector2 tileSize;
 
     public int tileBreakRoom;
@@ -114,47 +115,61 @@ public class Level : MonoBehaviour {
 
             int tileId = TilePositionToTileId(tilePos);
             if (!traversable) {
-                if (!tileOverlays.ContainsKey(tileId)) {
+                if (!breaches.ContainsKey(tileId)) {
                     Vector3 position = positionForTileGameObject((int)tilePos.x, (int)tilePos.y);
-                    Tile overlay = Instantiate<Tile>(tilePrefab, position, Quaternion.identity, this.transform);
-                    SpriteRenderer renderer = overlay.GetComponent<SpriteRenderer>();
+                    Breach breach = Instantiate<Breach>(breachPrefab, position, Quaternion.identity, this.transform);
+                    breach.level = this;
+                    breach.tile = tile;
+
+                    SpriteRenderer renderer = breach.GetComponent<SpriteRenderer>();
                     renderer.sprite = breachOverlay;
                     renderer.transform.localScale = tileScale;
-                    tileOverlays.Add(tileId, renderer);
+                    breaches.Add(tileId, breach);
                 }
             } else {
-                if (tileOverlays.ContainsKey(tileId)) {
-                    SpriteRenderer renderer = tileOverlays[tileId];
-                    tileOverlays.Remove(tileId);
-                    Destroy(renderer);
+                if (breaches.ContainsKey(tileId)) {
+                    Breach breach = breaches[tileId];
+                    breaches.Remove(tileId);
+                    Destroy(breach.gameObject);
                 }
             }
         }
     }
 
-    public Tile getAdjacentUntraversableTile(Vector2 worldPoint) {
+    public Breach getAdjacentUntraversableTile(Vector2 worldPoint) {
         Vector2 tilePosition = WorldToTilePosition(worldPoint);
 
         Vector2 rightTilePosition = new Vector2(tilePosition.x+1, tilePosition.y);
         Vector2 leftTilePosition = new Vector2(tilePosition.x-1, tilePosition.y);
         Vector2 downTilePosition = new Vector2(tilePosition.x, tilePosition.y+1);
         Vector2 upTilePosition = new Vector2(tilePosition.x, tilePosition.y-1);
-        Tile rightTile = TileAtTileCoords(rightTilePosition);
-        Tile leftTile = TileAtTileCoords(leftTilePosition);
-        Tile downTile = TileAtTileCoords(downTilePosition);
-        Tile upTile = TileAtTileCoords(upTilePosition);
 
-        if (rightTile != null && !rightTile.traversable) {
-            return rightTile;
+        Breach breach;
+        Breach rightBreach;
+        Breach leftBreach;
+        Breach downBreach;
+        Breach upBreach;
+
+        bool exists = breaches.TryGetValue(TilePositionToTileId(tilePosition), out breach);
+        bool rightExists = breaches.TryGetValue(TilePositionToTileId(rightTilePosition), out rightBreach);
+        bool leftExists = breaches.TryGetValue(TilePositionToTileId(leftTilePosition), out leftBreach);
+        bool downExists = breaches.TryGetValue(TilePositionToTileId(downTilePosition), out downBreach);
+        bool upExists = breaches.TryGetValue(TilePositionToTileId(upTilePosition), out upBreach);
+
+        if (exists) {
+            return breach;
         }
-        if (leftTile != null && !leftTile.traversable) {
-            return leftTile;
+        if (rightExists) {
+            return rightBreach;
         }
-        if (downTile != null && !downTile.traversable) {
-            return downTile;
+        if (leftExists) {
+            return leftBreach;
         }
-        if (upTile != null && !upTile.traversable) {
-            return upTile;
+        if (downExists) {
+            return downBreach;
+        }
+        if (upExists) {
+            return upBreach;
         }
         return null;
     }

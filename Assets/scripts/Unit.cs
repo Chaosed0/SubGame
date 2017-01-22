@@ -7,9 +7,12 @@ public class Unit : MonoBehaviour {
     private float stress = 0.0f;
     private Pathfinder pathfinder;
     private State state = State.Idling;
+    private Breach breachBeingRepaired = null;
 
     public float ambientStressGain = 0.1f;
     public float restingStressLoss = 0.25f;
+
+    public float timeToRepair = 5.0f;
 
     public enum State {
         Idling,
@@ -31,6 +34,17 @@ public class Unit : MonoBehaviour {
         } else {
             stress += ambientStressGain * Time.deltaTime;
         }
+
+        if (state == State.Repairing) {
+            breachBeingRepaired.doWorkOnBreach();
+        }
+    }
+
+    private void OnBreachFixed() {
+        breachBeingRepaired = null;
+        // slight hack: invoke pathfinder's onPathFinished which resets our state and
+        // notifies other systems that this unit is ready for another task
+        pathfinder.onPathFinished.Invoke();
     }
 
     private void OnPathStarted() {
@@ -38,7 +52,10 @@ public class Unit : MonoBehaviour {
     }
 
     private void OnPathFinished() {
-        if (pathfinder.level.getAdjacentUntraversableTile(this.transform.position)) {
+        Breach repairCandidate = pathfinder.level.getAdjacentUntraversableTile(this.transform.position);
+        if (repairCandidate != null) {
+            breachBeingRepaired = repairCandidate;
+            breachBeingRepaired.onBreachFixed.AddListener(OnBreachFixed);
             state = State.Repairing;
         } else {
             Tile tile = pathfinder.level.TileAtWorldPosition(this.transform.position);
@@ -46,6 +63,8 @@ public class Unit : MonoBehaviour {
                 state = State.Resting;
             } else if (tile.tileType != TileType.Normal) {
                 state = State.Operating;
+            } else {
+                state = State.Idling;
             }
         }
     }

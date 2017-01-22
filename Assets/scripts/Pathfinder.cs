@@ -57,6 +57,15 @@ public class Pathfinder : MonoBehaviour {
     }
 
     private void NavigateToNextPoint() {
+        if (pathIndex >= path.Length) {
+            isPathing = false;
+
+            if (onPathFinished != null) {
+                onPathFinished.Invoke();
+            }
+            return;
+        }
+
         Vector2 position = new Vector2(this.transform.position.x, this.transform.position.y);
         Vector2 direction = path[pathIndex] - position;
         Vector2 movement = direction.normalized * (isSlowed ? slowMoveSpeed : moveSpeed) * Time.deltaTime;
