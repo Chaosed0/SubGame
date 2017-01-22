@@ -57,7 +57,7 @@ public class UnitPanelController : MonoBehaviour {
 	}
 
     void engineToggleChanged(bool newValue) {
-        engineController.SetEngineOn(engineToggle.isOn);
+        engineController.SetEngineOn(!engineToggle.isOn);
     }
 
     void OnStationEntered(Unit unit, TileType type) {
