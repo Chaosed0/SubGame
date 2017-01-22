@@ -13,6 +13,7 @@ public class Kitchen : MonoBehaviour {
     private float foodRegenCountdown;
     private FoodSack unitsFoodSack;
 
+    public bool lostPower;
 
     void Start()
     {
@@ -47,22 +48,28 @@ public class Kitchen : MonoBehaviour {
 
     void OnEnterEffect(Unit unit, TileType type)
     {
-        unitsFoodSack = unit.GetComponent<FoodSack>();
-        ResetFoodRegenCountdown();
-        if (cookingStatChangesFoodRegenRate)
+        if (lostPower == false)
         {
-            currentFoodRegenSpeed = unit.unitStats.Cooking;
-        }
-        else
-        {
-            currentFoodRegenSpeed = 1;
+            unitsFoodSack = unit.GetComponent<FoodSack>();
+            ResetFoodRegenCountdown();
+            if (cookingStatChangesFoodRegenRate)
+            {
+                currentFoodRegenSpeed = unit.unitStats.Cooking;
+            }
+            else
+            {
+                currentFoodRegenSpeed = 1;
+            }
         }
     }
 
     void OnExitEffect(Unit unit, TileType type)
     {
-        unitsFoodSack = null;
-        ResetCookingSpeed();
-        ResetFoodRegenCountdown();
+        if (lostPower == false)
+        {
+            unitsFoodSack = null;
+            ResetCookingSpeed();
+            ResetFoodRegenCountdown();
+        }
     }
 }

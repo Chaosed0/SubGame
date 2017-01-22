@@ -22,6 +22,8 @@ public class Ship : MonoBehaviour {
     public float shipMovingBubbleSpeed;
     public GameObject[] bubbleParticles;
 
+    public bool lostPower;
+
     //public bool movingDown;
 
     public float depth {
@@ -41,16 +43,20 @@ public class Ship : MonoBehaviour {
 	}
 
     void Update () {
-        _depth += moveSpeed * moveFactor * Time.deltaTime;
 
-        //if (movingDown == true)
-        if (moveFactor > 0)
+        if (lostPower == false)
         {
-            MoveShipDown(true);
-        }
-        else
-        {
-            MoveShipDown(false);
+            _depth += moveSpeed * moveFactor * Time.deltaTime;
+
+            //if (movingDown == true)
+            if (moveFactor > 0)
+            {
+                MoveShipDown(true);
+            }
+            else
+            {
+                MoveShipDown(false);
+            }
         }
 
     }

@@ -19,6 +19,9 @@ public class SonarStation : MonoBehaviour {
 
 	public RadarEmitter sonarEmitter;
 
+    //true when the engine is off, makes it so that you can't use this while lostPower is true
+    public bool lostPower;
+
 	// Use this for initialization
 	void Start () {
 		ship.onStationEntered.AddListener (OnEnterEffect);//Function with unit and tile type
@@ -47,40 +50,45 @@ public class SonarStation : MonoBehaviour {
 
 	void OnEnterEffect(Unit unit, TileType type)
 	{
-		//Get rid of all non-relevant cases
-		if (sonarNumber == SonarNumber.Room1) 
-		{
-			if (type != TileType.Sonar1)
-				return;
-		} 
-		else if (sonarNumber == SonarNumber.Room2) 
-		{
-			if (type != TileType.Sonar2)
-				return;
-		}
+        if (lostPower == false)
+        {
+            //Get rid of all non-relevant cases
+            if (sonarNumber == SonarNumber.Room1)
+            {
+                if (type != TileType.Sonar1)
+                    return;
+            }
+            else if (sonarNumber == SonarNumber.Room2)
+            {
+                if (type != TileType.Sonar2)
+                    return;
+            }
 
-		Debug.Log ("Entered Sonar");
-	    sonarCooldownMultiplier = 1.0f * unit.unitStats.Sonar;
-		isOccupied = true;
+            Debug.Log("Entered Sonar");
+            sonarCooldownMultiplier = 1.0f * unit.unitStats.Sonar;
+            isOccupied = true;
+        }
 	}
 
 	void OnExitEffect(Unit unit, TileType type)
 	{
+        if (lostPower == false)
+        {
+            //Get rid of all non-relevant cases
+            if (sonarNumber == SonarNumber.Room1)
+            {
+                if (type != TileType.Sonar1)
+                    return;
+            }
+            else if (sonarNumber == SonarNumber.Room2)
+            {
+                if (type != TileType.Sonar2)
+                    return;
+            }
 
-		//Get rid of all non-relevant cases
-		if (sonarNumber == SonarNumber.Room1) 
-		{
-			if (type != TileType.Sonar1)
-				return;
-		} 
-		else if (sonarNumber == SonarNumber.Room2) 
-		{
-			if (type != TileType.Sonar2)
-				return;
-		}
-
-		Debug.Log ("Exited Sonar");
-	    sonarCooldownMultiplier = 0f;
-		isOccupied = false;
+            Debug.Log("Exited Sonar");
+            sonarCooldownMultiplier = 0f;
+            isOccupied = false;
+        }
 	}
 }

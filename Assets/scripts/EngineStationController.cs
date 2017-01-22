@@ -13,6 +13,11 @@ public class EngineStationController : MonoBehaviour {
     public Light[] normalLights;
     public Light[] lowLights;
 
+    public SonarStation sonar1;
+    public SonarStation sonar2;
+    public Kitchen kitchen;
+    public Ship steering;
+
 	// Use this for initialization
 	void Start () 
     {
@@ -39,6 +44,8 @@ public class EngineStationController : MonoBehaviour {
                     normalLights[i].enabled = false;
                     lowLights[i].enabled = true;
                 }
+
+                ShutDownSystems();
                 engineOn = false;
             }
             else
@@ -50,6 +57,8 @@ public class EngineStationController : MonoBehaviour {
                     normalLights[i].enabled = true;
                     lowLights[i].enabled = false;
                 }
+
+                TurnOnSystems();
                 engineOn = true;
             }
         }
@@ -58,5 +67,21 @@ public class EngineStationController : MonoBehaviour {
     void OnExitEffect(Unit unit, TileType type)
     {
         
+    }
+
+    public void ShutDownSystems()
+    {
+        sonar1.lostPower = true;
+        sonar2.lostPower = true;
+        kitchen.lostPower = true;
+        steering.lostPower = true;
+    }
+
+    public void TurnOnSystems()
+    {
+        sonar1.lostPower = false;
+        sonar2.lostPower = false;
+        kitchen.lostPower = false;
+        steering.lostPower = false;
     }
 }
