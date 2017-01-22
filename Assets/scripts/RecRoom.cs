@@ -31,7 +31,10 @@ public class RecRoom : MonoBehaviour {
     {
         if (currentFood <= 0)
         {
-            eatingUnit.GetComponent<AddsToAudioBubble>().makingRecRoomSound = false;
+            if (eatingUnit != null)
+            {
+                eatingUnit.GetComponent<AddsToAudioBubble>().makingRecRoomSound = false;
+            }
         }
 
         if (eatingUnit != null && currentFood > 0)
