@@ -7,6 +7,9 @@ public class Ship : MonoBehaviour {
     private float _depth = 0.0f;
     private float moveFactor = 0.0f;
 
+    private int[] depthMilestones = { 5000, 10000, 15000, 20000, 25000, 30000 };
+    int currentMilestone = 0;
+
     public float moveSpeed = 10.0f;
     public float maxDepth = 100.0f;
 
@@ -57,6 +60,17 @@ public class Ship : MonoBehaviour {
             else
             {
                 MoveShipDown(false, 0);
+            }
+
+            float milestoneFraction = (currentMilestone + 1.0f) / depthMilestones.Length;
+            Debug.Log(_depth / maxDepth + " " + milestoneFraction);
+            if (currentMilestone < depthMilestones.Length && _depth / maxDepth >= milestoneFraction)
+            {
+                DepthText depthText = FindObjectOfType<DepthText>();
+                if (depthText != null) {
+                    depthText.ShowDepth(depthMilestones[currentMilestone]);
+                }
+                currentMilestone++;
             }
         }
     }
