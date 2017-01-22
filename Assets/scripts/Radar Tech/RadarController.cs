@@ -6,7 +6,7 @@ public class RadarController : MonoBehaviour {
 
 	public static RadarController mainRadarController;
 
-	public static float maxRadarDistanceFromCenter = 20f;
+	public static float maxRadarDistanceFromCenter = 40f;
 
 	public GameObject MainSub;
 
@@ -45,7 +45,13 @@ public class RadarController : MonoBehaviour {
 	public void CreateRedDot(Vector3 worldObjectLocation)
 	{
 		//Find position
-		Vector3 ratioToSub = new Vector3 ((worldObjectLocation.x-MainSub.transform.position.x)/maxRadarDistanceFromCenter, (worldObjectLocation.y-MainSub.transform.position.y)/maxRadarDistanceFromCenter, 1);
+		Vector3 ratioToSub = new Vector3 ((worldObjectLocation.x-MainSub.transform.position.x)/maxRadarDistanceFromCenter, 
+			                              (worldObjectLocation.y-MainSub.transform.position.y)/maxRadarDistanceFromCenter, 
+			                               1);
+
+		//Ignore when dot goes out of UI
+		if (Mathf.Abs(ratioToSub.x) > 1 || Mathf.Abs(ratioToSub.y) > 1)
+			return;
 
 		Vector3 position = radarUIBase.transform.position + radarUIWidth * ratioToSub;
 

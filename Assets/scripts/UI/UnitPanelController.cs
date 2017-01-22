@@ -1,29 +1,50 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UnitPanelController : MonoBehaviour {
-    public UnitPanel panelPrefab;
-    public Unit[] units;
+    public Image portrait;
+    public Text nameText;
 
-    private List<UnitPanel> panels = new List<UnitPanel>();
+    private CanvasGroup group;
+    private Unit selectedUnit;
 
 	void Start () {
-        foreach (Transform child in this.transform) {
-            GameObject.Destroy(child.gameObject);
-        }
+        group = this.GetComponent<CanvasGroup>();
+        group.alpha = 0.0f;
 
+        Pathfinder[] units = FindObjectsOfType<Pathfinder>();
         for (int i = 0; i < units.Length; i++) {
-            UnitPanel newPanel = Instantiate<UnitPanel>(panelPrefab, Vector3.zero, Quaternion.identity, this.transform);
-            newPanel.name = units[i].name;
-            newPanel.nameText.text = units[i].name;
-            panels.Add(newPanel);
+            Unit unit = units[i].GetComponent<Unit>();
+            units[i].onSelected.AddListener(() => setSelection(unit));
         }
     }
 
     void Update () {
-        for (int i = 0; i < units.Length; i++) {
-            panels[i].sanitySlider.value = units[i].GetStressLevel();
+        if (selectedUnit == null) {
+            return;
+        }
+
+        nameText.text = selectedUnit.name;
+
+        if (selectedUnit.IsPanicked()) {
+            portrait.sprite = selectedUnit.unitStats.panicPortrait;
+        } else if (selectedUnit.GetStressLevel() <= 0.3f) {
+            portrait.sprite = selectedUnit.unitStats.goodPortrait;
+        } else if (selectedUnit.GetStressLevel() <= 0.6f) {
+            portrait.sprite = selectedUnit.unitStats.mediumPortrait;
+        } else if (selectedUnit.GetStressLevel() <= 1.0f) {
+            portrait.sprite = selectedUnit.unitStats.badPortrait;
         }
 	}
+
+    void setSelection(Unit unit) {
+        if (unit == null) {
+            group.alpha = 0.0f;
+        } else {
+            group.alpha = 1.0f;
+        }
+        selectedUnit = unit;
+    }
 }

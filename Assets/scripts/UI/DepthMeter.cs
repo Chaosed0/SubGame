@@ -6,13 +6,20 @@ using UnityEngine.UI;
 public class DepthMeter : MonoBehaviour {
     public Ship ship;
 
-    private Text text;
+    private RectTransform rectTransform;
+    private Image image;
+    private float parentHeight = -1;
 
 	void Start () {
-        text = GetComponent<Text>();
+        image = this.GetComponent<Image>();
+        rectTransform = this.GetComponent<RectTransform>();
+        RectTransform parent = this.transform.parent.GetComponent<RectTransform>();
+        parentHeight = parent.rect.height;
 	}
 
 	void Update () {
-        text.text = string.Format("{0:0.00}", ship.depth);
+        Vector2 anchoredPosition = rectTransform.anchoredPosition;
+        anchoredPosition.y = -ship.GetDepthFraction() * parentHeight;
+        rectTransform.anchoredPosition = anchoredPosition;
 	}
 }
