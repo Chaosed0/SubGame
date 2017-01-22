@@ -20,6 +20,8 @@ public class SmallMonsterScript : MonoBehaviour {
 
     public Sprite[] spriteChoices;
 
+	public ParticleSystem hitParticleSystemPrefab;
+
 	// Use this for initialization
 	void Start () {
 
@@ -62,7 +64,7 @@ public class SmallMonsterScript : MonoBehaviour {
         StartCoroutine(DecreaseAlphaCoroutine(newAfterImage.GetComponent<SpriteRenderer>(), 1));
 
 		//Put red dot on UI
-		RadarController.mainRadarController.CreateRedDot(transform.position);
+//		RadarController.mainRadarController.CreateRedDot(transform.position);
 	}
 
 	IEnumerator DecreaseAlphaCoroutine( SpriteRenderer sprite, float lifeTime )
@@ -97,9 +99,15 @@ public class SmallMonsterScript : MonoBehaviour {
 		//appear
 		GetComponent<SpriteRenderer>().enabled = true;
 
+		//Get random tile to target
+		Tile randomTile = Level.levelReference.getRandomTraversableTile();
+
+		//Play monster noticing sound
+		GetComponent<AudioSource> ().Play ();
+
 		//Change direction to ship middle
 		speed *=.1f;
-		StartCoroutine(StartAttack (target.position - transform.position, 20, target));
+		StartCoroutine(StartAttack (randomTile.transform.position - transform.position, 20, randomTile.transform));
 
 
 		/*
@@ -109,10 +117,27 @@ public class SmallMonsterScript : MonoBehaviour {
 		speed *= 10f;
 
 */
+
 	}
 
 	IEnumerator StartAttack(Vector3 targetDirection, float targetSpeed, Transform target)
 	{
+
+		//Check if close enough, if yes trigger hull breach
+		while(Vector3.Distance(target.position, transform.position) > 2f )
+		{
+
+			Vector3 newDirection = target.position - transform.position;
+
+			//Otherwise seek target
+			SetDirection( Vector3.Lerp (direction, newDirection, 1f)  );
+
+			speed = Mathf.Lerp (speed, targetSpeed, 0.1f);
+
+			yield return new WaitForEndOfFrame ();
+		}
+
+		/*
 		float lerpTime = 1f;
 
 		while (lerpTime > 0) 
@@ -130,15 +155,27 @@ public class SmallMonsterScript : MonoBehaviour {
 		speed = targetSpeed;
 
 		//Check if close enough, if yes trigger hull breach
-		while(Vector3.Distance(target.position, transform.position) > 15f )
+		while(Vector3.Distance(target.position, transform.position) > 5f )
 		{
 			yield return new WaitForEndOfFrame ();
 		}
 
-		//Trigger hull breach
-		Tile randomTile = Level.levelReference.getRandomTraversableTile();
-		if (randomTile == null)
-			Debug.Log ("Adsfasdf");
-		Level.levelReference.SetTraversable (randomTile.transform.position, false);
+		*/
+
+		//Create particle and hullbreach sound
+		Vector3 particlePosition = target.position;
+		particlePosition.z = transform.position.z;
+		Instantiate (hitParticleSystemPrefab, particlePosition, transform.rotation);
+
+		Level.levelReference.SetTraversable (target.position, false);
+		//Make sound
+
+		//Play breah hull sound
+	//	GetComponent<AudioSource>().PlayOneShot(hullBreachSound);
+
+
+
+
+
 	}
 }

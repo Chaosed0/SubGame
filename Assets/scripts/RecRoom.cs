@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class RecRoom : MonoBehaviour {
 
@@ -16,6 +17,8 @@ public class RecRoom : MonoBehaviour {
 
     private Unit eatingUnit;
 
+    public class OnFoodCountChanged : UnityEvent<int> { };
+    public OnFoodCountChanged onFoodCountChanged = new OnFoodCountChanged();
 
     void Start()
     {
@@ -52,21 +55,26 @@ public class RecRoom : MonoBehaviour {
         if (eatingUnit.EatFood(foodDestressAmount))
         {
             currentFood -= 1;
+
             eatingUnit.GetComponent<AddsToAudioBubble>().makingRecRoomSound = true;
+            onFoodCountChanged.Invoke(currentFood);
+
         }
     }
 
     void OnEnterEffect(Unit unit, TileType type)
     {
-        if (type == TileType.Rec)
-        {
-                
-            
+        if (type == TileType.Rec) {
+
             FoodSack foodSack = unit.GetComponent<FoodSack>();
             if (foodSack.HasFood())
             {
                 currentFood += foodSack.RemoveFromSack();
                 currentFood = currentFood > maxFood ? maxFood : currentFood;
+
+
+                onFoodCountChanged.Invoke(currentFood);
+
             }
 
             eatingUnit = unit;
@@ -76,11 +84,13 @@ public class RecRoom : MonoBehaviour {
 
     void OnExitEffect(Unit unit, TileType type)
     {
+
         if (type == TileType.Rec)
         {
             eatingUnit.GetComponent<AddsToAudioBubble>().makingRecRoomSound = false;
             eatingUnit = null;
             ResetFoodEatCountdown();
         }
+         
     }
 }
