@@ -12,7 +12,7 @@ public class SonarStation : MonoBehaviour {
 	public SonarNumber sonarNumber;
 
 	//Time for a normally skilled person to trigger
-	private float sonarMaxCooldown = 1f;
+	private float sonarMaxCooldown = 2f;
 	private float sonarCurrentCooldown = 0f;
     private float sonarCooldownMultiplier = 0f;
 	private bool isOccupied = false;

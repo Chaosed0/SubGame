@@ -7,7 +7,7 @@ public class RadarPulse : MonoBehaviour {
 
 	float sizeIncrease = 2.94f;
 
-	public static float maxLifeTime = 10f;
+	public static float maxLifeTime = 20f;
 	float currentLifeTime;
 
 	// Use this for initialization
