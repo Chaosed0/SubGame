@@ -7,11 +7,11 @@ public class Level : MonoBehaviour {
 
     private Tile[,] levelTiles;
     private int[,] levelMap = {
-        { 1, 5, 1, 1, 1, 1, 1, 1, 1, 3, 1, 1, 1, 4, 1 },
+        { 1, 5, 1, 1, 1, 8, 1, 1, 1, 3, 1, 1, 1, 4, 1 },
         { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
         { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
         { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-        { 1, 6, 1, 1, 1, 7, 1, 8, 1, 1, 1, 1, 1, 2, 1 },
+        { 1, 6, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 7, 1 },
     };
 
     private Dictionary<int, Breach> breaches = new Dictionary<int, Breach>();

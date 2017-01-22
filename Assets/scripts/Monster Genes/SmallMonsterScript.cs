@@ -18,10 +18,14 @@ public class SmallMonsterScript : MonoBehaviour {
 
 	private bool hasTriggeredAttack = false;
 
+    public Sprite[] spriteChoices;
+
 	// Use this for initialization
 	void Start () {
 
 		direction = direction.normalized;
+
+        GetComponent<SpriteRenderer>().sprite = spriteChoices[Random.Range(0, spriteChoices.Length)];
 
 	}
 
@@ -52,7 +56,7 @@ public class SmallMonsterScript : MonoBehaviour {
 	public void DropDetectedImage(float remainingFadeTime)
 	{
 		GameObject newAfterImage = Instantiate (DetectedImagePrefab, transform.position, transform.rotation);
-
+        newAfterImage.GetComponent<SpriteRenderer>().sprite = GetComponent<SpriteRenderer>().sprite;
 		//Slowly count down alpha
 		//StartCoroutine(DecreaseAlphaCoroutine(newAfterImage.GetComponent<SpriteRenderer>(), remainingFadeTime));
         StartCoroutine(DecreaseAlphaCoroutine(newAfterImage.GetComponent<SpriteRenderer>(), 1));

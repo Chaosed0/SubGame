@@ -112,7 +112,7 @@ public class Ship : MonoBehaviour {
         transform.position = new Vector3(transform.position.x, transform.position.y - (moveAmount), transform.position.z);
         level.transform.position = new Vector3(level.transform.position.x, level.transform.position.y - (moveAmount), level.transform.position.z);
 
-        /*if (sendMoving == true)
+        if (sendMoving == true)
         {
             if (isMoving == false)
             {
@@ -174,7 +174,7 @@ public class Ship : MonoBehaviour {
 
                 isMoving = false;
             }
-        }*/
+        }
 
         //bubble changing here
        /* if (isMoving == false)

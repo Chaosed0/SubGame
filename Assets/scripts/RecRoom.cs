@@ -47,6 +47,7 @@ public class RecRoom : MonoBehaviour {
         if (eatingUnit.EatFood(foodDestressAmount))
         {
             currentFood -= 1;
+
         }
     }
 

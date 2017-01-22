@@ -18,6 +18,8 @@ public class EngineStationController : MonoBehaviour {
     public Kitchen kitchen;
     public Ship steering;
 
+    public AudioSource engineOffSound;
+
 	// Use this for initialization
 	void Start () 
     {
@@ -71,6 +73,7 @@ public class EngineStationController : MonoBehaviour {
 
     public void ShutDownSystems()
     {
+        Instantiate(engineOffSound, transform.position, Quaternion.identity);
         sonar1.lostPower = true;
         sonar2.lostPower = true;
         kitchen.lostPower = true;

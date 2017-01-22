@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 [RequireComponent(typeof (Pathfinder))]
 public class Unit : MonoBehaviour {
-    private float stress = 0.0f;
+    public float stress = 0.0f;
     private Pathfinder pathfinder;
     private State state = State.Idling;
     private Breach breachBeingRepaired = null;
@@ -48,6 +48,7 @@ public class Unit : MonoBehaviour {
             if (stress <= panicOffThreshold) {
                 // unpanic...
                 state = State.Idling;
+                GetComponent<AddsToAudioBubble>().makingPanicSound = false;
                 if (pathfinder.onPathFinished != null) {
                     pathfinder.onPathFinished.Invoke();
                 }
@@ -58,15 +59,32 @@ public class Unit : MonoBehaviour {
         } else {
             if (state == State.Resting) {
                 stress -= restingStressLoss * Time.deltaTime;
+                GetComponent<AddsToAudioBubble>().makingRecRoomSound = true;
             } else {
                 stress += ambientStressGain * Time.deltaTime;
+                GetComponent<AddsToAudioBubble>().makingRecRoomSound = false;
             }
         }
 
         //Debug.Log(stress);
 
-        if (state == State.Repairing) {
+        if (state == State.Repairing)
+        {
             breachBeingRepaired.doWorkOnBreach(unitStats.Repair);
+            GetComponent<AddsToAudioBubble>().makingRepairSound = true;
+            GetComponent<AnimateObject>().playingRepair = true;
+            GetComponent<AnimateObject>().playingIdle = false;
+        }
+        else if (state == State.Idling)
+        {
+            GetComponent<AddsToAudioBubble>().makingRepairSound = false;
+            GetComponent<AnimateObject>().playingRepair = false;
+            GetComponent<AnimateObject>().playingIdle = true;
+        }
+        else if(state == State.Panicked)
+        {
+            GetComponent<AnimateObject>().playingPanic = true;
+            GetComponent<AnimateObject>().playingIdle = false;
         }
     }
 
@@ -106,6 +124,7 @@ public class Unit : MonoBehaviour {
     private void OnPathFinished() {
         if (stress >= panicThreshold) {
             state = State.Panicked;
+            GetComponent<AddsToAudioBubble>().makingPanicSound = true;
             if (onPanicked != null) {
                 onPanicked.Invoke();
             }
@@ -119,7 +138,7 @@ public class Unit : MonoBehaviour {
             state = State.Repairing;
         } else {
             Tile tile = pathfinder.level.TileAtWorldPosition(this.transform.position);
-            if (tile.tileType == TileType.Break) {
+            if (tile.tileType == TileType.Rec) {
                 state = State.Resting;
             } else if (tile.tileType != TileType.Normal) {
                 state = State.Operating;

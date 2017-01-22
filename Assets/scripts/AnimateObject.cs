@@ -10,6 +10,21 @@ public class AnimateObject : MonoBehaviour {
     public float idleAnimTimerBase;
     public float idleAnimTimer;
 
+    public bool playingWalk;
+    public Sprite[] walkAnim;
+    public float walkAnimTimerBase;
+    public float walkAnimTimer;
+
+    public bool playingRepair;
+    public Sprite[] repairAnim;
+    public float repairAnimTimerBase;
+    public float repairAnimTimer;
+
+    public bool playingPanic;
+    public Sprite[] panicAnim;
+    public float panicAnimTimerBase;
+    public float panicAnimTimer;
+
 	// Use this for initialization
 	void Start () 
     {
@@ -27,24 +42,75 @@ public class AnimateObject : MonoBehaviour {
             }
             else
             {
-                GoToNextFrame();
+                GoToNextFrame(idleAnim);
 
                 idleAnimTimer = idleAnimTimerBase;
             }
         }
+        else if (playingWalk == true)
+        {
+            if (walkAnimTimer > 0)
+            {
+                walkAnimTimer -= Time.deltaTime;
+            }
+            else
+            {
+                GoToNextFrame(walkAnim);
+
+                walkAnimTimer = walkAnimTimerBase;
+            }
+        }
+        else if (playingRepair == true)
+        {
+            if (repairAnimTimer > 0)
+            {
+                repairAnimTimer -= Time.deltaTime;
+            }
+            else
+            {
+                GoToNextFrame(repairAnim);
+
+                repairAnimTimer = repairAnimTimerBase;
+            }
+        }
+        else if (playingPanic == true)
+        {
+            if (panicAnimTimer > 0)
+            {
+                panicAnimTimer -= Time.deltaTime;
+            }
+            else
+            {
+                GoToNextFrame(panicAnim);
+
+                panicAnimTimer = panicAnimTimerBase;
+            }
+        }
 	}
 
-    void GoToNextFrame()
+    void GoToNextFrame(Sprite[] sprites)
     {
-        if (currentFrame < idleAnim.Length - 1)
+        if (currentFrame < sprites.Length - 1)
         {
             currentFrame += 1;
-            GetComponent<SpriteRenderer>().sprite = idleAnim[currentFrame];
+            GetComponent<SpriteRenderer>().sprite = sprites[currentFrame];
         }
         else
         {
             currentFrame = 0;
-            GetComponent<SpriteRenderer>().sprite = idleAnim[currentFrame];
+            GetComponent<SpriteRenderer>().sprite = sprites[currentFrame];
         }
+    }
+
+    public void StartWalkAnim()
+    {
+        playingIdle = false;
+        playingWalk = true;
+    }
+
+    public void StartIdleAnim()
+    {
+        playingIdle = true;
+        playingWalk = false;
     }
 }
