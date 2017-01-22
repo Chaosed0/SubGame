@@ -10,8 +10,8 @@ public class Pathfinder : MonoBehaviour {
     private Vector2[] path;
     private Vector2 destination;
 
-    public float moveSpeed = 0.5f;
-    public float slowMoveSpeed = 0.5f;
+    public float moveSpeed = 2.0f;
+    public float slowMoveSpeed = 1.0f;
     public int unitId = 0;
     public PlayerInput playerInput;
     public Level level;
@@ -57,7 +57,7 @@ public class Pathfinder : MonoBehaviour {
     private void NavigateToNextPoint() {
         Vector2 position = new Vector2(this.transform.position.x, this.transform.position.y);
         Vector2 direction = path[pathIndex] - position;
-        Vector2 movement = direction.normalized * (isSlowed ? slowMoveSpeed : moveSpeed);
+        Vector2 movement = direction.normalized * (isSlowed ? slowMoveSpeed : moveSpeed) * Time.deltaTime;
 
         this.transform.position = new Vector3(this.transform.position.x + movement.x, this.transform.position.y + movement.y, this.transform.position.z);
 

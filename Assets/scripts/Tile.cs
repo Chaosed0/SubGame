@@ -11,7 +11,7 @@ public enum TileType {
 public class Tile : MonoBehaviour {
     public int occupyingUnitId = -1;
     public bool traversable = true;
-    public TileType tileType;
+    public TileType tileType = TileType.Normal;
 
     public bool CanUnitMoveHere(int unitId) {
         return occupyingUnitId < 0 && traversable;

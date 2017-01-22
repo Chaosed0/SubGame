@@ -6,10 +6,10 @@ using UnityEngine.Events;
 public class Level : MonoBehaviour {
     private Tile[,] levelTiles;
     private int[,] levelMap = {
-        { 1, 1, 1, 0, 0, 1, 1, 1 },
+        { 1, 1, 1, 0, 0, 3, 1, 1 },
         { 0, 1, 0, 0, 0, 0, 0, 1 },
         { 1, 1, 1, 1, 1, 1, 1, 1 },
-        { 1, 0, 0, 0, 1, 0, 0, 1 },
+        { 1, 0, 0, 0, 2, 0, 0, 1 },
         { 1, 1, 1, 1, 1, 1, 1, 1 },
     };
 
@@ -20,6 +20,9 @@ public class Level : MonoBehaviour {
     public Sprite breachOverlay;
     public Tile tilePrefab;
     public Vector2 tileSize;
+
+    public int tileBreakRoom;
+    public int tilePilotRoom;
 
     public Vector2 tileScale = new Vector2(2.0f, 2.0f);
     public float pixelsPerUnit = 108.0f;
@@ -44,6 +47,12 @@ public class Level : MonoBehaviour {
                     SpriteRenderer tileSpriteRenderer = tile.GetComponent<SpriteRenderer>();
                     tileSpriteRenderer.sprite = tileImg;
                     levelTiles[y,x] = tile;
+
+                    if (tileId == tileBreakRoom) {
+                        tile.tileType = TileType.Break;
+                    } else if (tileId == tilePilotRoom) {
+                        tile.tileType = TileType.Pilot;
+                    }
                 } else {
                     levelTiles[y,x] = null;
                 }

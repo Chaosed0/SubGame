@@ -9,7 +9,6 @@ public class Unit : MonoBehaviour {
         Moving,
         Repairing,
         Operating,
-        Resting
     }
 
     Pathfinder pathfinder;
@@ -29,13 +28,10 @@ public class Unit : MonoBehaviour {
         if (pathfinder.level.getAdjacentUntraversableTile(this.transform.position)) {
             state = State.Repairing;
         } else {
-            state = State.Idling;
-        }
-    }
-
-    void Update() {
-        if (state != State.Idling) {
-            Debug.Log(state);
+            Tile tile = pathfinder.level.TileAtWorldPosition(this.transform.position);
+            if (tile.tileType != TileType.Normal) {
+                state = State.Operating;
+            }
         }
     }
 }
