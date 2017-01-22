@@ -64,7 +64,7 @@ public class SmallMonsterScript : MonoBehaviour {
         StartCoroutine(DecreaseAlphaCoroutine(newAfterImage.GetComponent<SpriteRenderer>(), 1));
 
 		//Put red dot on UI
-		RadarController.mainRadarController.CreateRedDot(transform.position);
+//		RadarController.mainRadarController.CreateRedDot(transform.position);
 	}
 
 	IEnumerator DecreaseAlphaCoroutine( SpriteRenderer sprite, float lifeTime )
@@ -162,16 +162,18 @@ public class SmallMonsterScript : MonoBehaviour {
 
 		*/
 
+		//Create particle and hullbreach sound
+		Vector3 particlePosition = target.position;
+		particlePosition.z = transform.position.z;
+		Instantiate (hitParticleSystemPrefab, particlePosition, transform.rotation);
+
 		Level.levelReference.SetTraversable (target.position, false);
 		//Make sound
 
 		//Play breah hull sound
 	//	GetComponent<AudioSource>().PlayOneShot(hullBreachSound);
 
-		//Create particle and hullbreach sound
-		Vector3 particlePosition = target.position;
-		particlePosition.z = transform.position.z;
-		Instantiate (hitParticleSystemPrefab, particlePosition, transform.rotation);
+
 
 
 
