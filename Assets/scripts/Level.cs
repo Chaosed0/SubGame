@@ -6,11 +6,11 @@ using UnityEngine.Events;
 public class Level : MonoBehaviour {
     private Tile[,] levelTiles;
     private int[,] levelMap = {
-        { 1, 5, 1, 1, 7, 1, 1, 1, 1, 3, 1, 1, 1, 4, 1 },
+        { 1, 5, 1, 1, 1, 1, 1, 1, 1, 3, 1, 1, 1, 4, 1 },
         { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
         { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
         { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-        { 1, 6, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1 },
+        { 1, 6, 1, 1, 1, 7, 1, 8, 1, 1, 1, 1, 1, 2, 1 },
     };
 
     private Dictionary<int, Breach> breaches = new Dictionary<int, Breach>();
@@ -28,6 +28,7 @@ public class Level : MonoBehaviour {
 	public int tileSonar2Room;
 	public int tileEngineRoom;
 	public int tileKitchenRoom;
+    public int tileRecRoom;
 
     public Vector2 tileScale = new Vector2(2.0f, 2.0f);
     public float pixelsPerUnit = 108.0f;
@@ -70,6 +71,9 @@ public class Level : MonoBehaviour {
 					else if (tileId == tileKitchenRoom) {
 						tile.tileType = TileType.Kitchen;
 					}
+                    else if (tileId == tileRecRoom) {
+                        tile.tileType = TileType.Rec;
+                    }
                 } else {
                     levelTiles[y,x] = null;
                 }
