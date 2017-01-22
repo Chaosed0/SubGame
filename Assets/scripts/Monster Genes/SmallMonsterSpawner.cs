@@ -11,7 +11,7 @@ public class SmallMonsterSpawner : MonoBehaviour {
     Vector2 maxMinSpeed = new Vector2 (2.8f, 3.2f);
 
 	//This is a range to spawn at
-	Vector2 spawnBoxYDistance = new Vector2(-45 , 0);
+	Vector2 spawnBoxYDistance = new Vector2(-30 , 5);
 
 	//Spawns this X distance either left or right
 	Vector2 spawnBoxXDistance = new Vector2(-45f, 45f);

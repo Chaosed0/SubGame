@@ -112,6 +112,13 @@ public class Pathfinder : MonoBehaviour {
             GetComponent<AnimateObject>().playingWalk = false;
             GetComponent<AnimateObject>().playingClimb = true;
         }
+        else if (movement.x != 0)
+        {
+            GetComponent<AnimateObject>().playingWalk = true;
+            GetComponent<AnimateObject>().playingClimb = false;
+        }
+
+        
 
         Vector2 newPosition = new Vector2(this.transform.localPosition.x, this.transform.localPosition.y);
         if ((path[pathIndex] - newPosition).magnitude < 0.05f) {
