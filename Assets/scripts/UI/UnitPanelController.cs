@@ -14,7 +14,7 @@ public class UnitPanelController : MonoBehaviour {
         }
 
         for (int i = 0; i < units.Length; i++) {
-            UnitPanel newPanel = Instantiate<UnitPanel>(panelPrefab, this.transform);
+            UnitPanel newPanel = Instantiate<UnitPanel>(panelPrefab, Vector3.zero, Quaternion.identity, this.transform);
             newPanel.name = units[i].name;
             newPanel.nameText.text = units[i].name;
             panels.Add(newPanel);
