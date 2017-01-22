@@ -63,7 +63,6 @@ public class Ship : MonoBehaviour {
             }
 
             float milestoneFraction = (currentMilestone + 1.0f) / depthMilestones.Length;
-            Debug.Log(_depth / maxDepth + " " + milestoneFraction);
             if (currentMilestone < depthMilestones.Length && _depth / maxDepth >= milestoneFraction)
             {
                 DepthText depthText = FindObjectOfType<DepthText>();

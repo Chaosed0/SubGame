@@ -78,7 +78,7 @@ public class Unit : MonoBehaviour {
             GetComponent<AnimateObject>().playingRepair = true;
             GetComponent<AnimateObject>().playingIdle = false;
         }
-        else if (state == State.Idling)
+        else if (state == State.Idling || state == State.Operating)
         {
             GetComponent<AddsToAudioBubble>().makingRepairSound = false;
             GetComponent<AnimateObject>().playingRepair = false;
