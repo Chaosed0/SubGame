@@ -6,6 +6,8 @@ using UnityEngine.Events;
 [RequireComponent(typeof (Pathfinder))]
 public class Unit : MonoBehaviour {
     public float stress = 0.0f;
+    public float stressMinOnStart;
+    public float stressMaxOnStart;
     private Pathfinder pathfinder;
     private State state = State.Idling;
     private Breach breachBeingRepaired = null;
@@ -38,6 +40,8 @@ public class Unit : MonoBehaviour {
         pathfinder.onPathFinished.AddListener(OnPathFinished);
 
 	    unitStats = GetComponent<UnitStats>();
+
+        stress = Random.Range(stressMinOnStart, stressMaxOnStart);
 	}
 
     void Update() {

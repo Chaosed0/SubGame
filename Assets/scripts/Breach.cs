@@ -67,6 +67,7 @@ public class Breach : MonoBehaviour {
         if (workLeft <= 0.0f) {
             level.SetTraversable(tile.transform.position, true);
             if (onBreachFixed != null) {
+                
                 onBreachFixed.Invoke();
             }
         }
