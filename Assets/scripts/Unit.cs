@@ -78,6 +78,10 @@ public class Unit : MonoBehaviour {
         return state == State.Panicked;
     }
 
+    public float GetStressLevel() {
+        return stress / panicThreshold;
+    }
+
     private void OnBreachFixed() {
         breachBeingRepaired = null;
         // slight hack: invoke pathfinder's onPathFinished which resets our state and

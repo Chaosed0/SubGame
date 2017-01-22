@@ -86,15 +86,15 @@ public class Pathfinder : MonoBehaviour {
             return;
         }
 
-        Vector2 position = new Vector2(this.transform.position.x, this.transform.position.y);
+        Vector2 position = new Vector2(this.transform.localPosition.x, this.transform.localPosition.y);
         Vector2 direction = path[pathIndex] - position;
         Vector2 movement = direction.normalized * (isSlowed ? slowMoveSpeed : moveSpeed) * Time.deltaTime;
 
-        this.transform.position = new Vector3(this.transform.position.x + movement.x, this.transform.position.y + movement.y, this.transform.position.z);
+        this.transform.localPosition = new Vector3(this.transform.localPosition.x + movement.x, this.transform.localPosition.y + movement.y, this.transform.localPosition.z);
 
-        Vector2 newPosition = new Vector2(this.transform.position.x, this.transform.position.y);
+        Vector2 newPosition = new Vector2(this.transform.localPosition.x, this.transform.localPosition.y);
         if ((path[pathIndex] - newPosition).magnitude < 0.05f) {
-            this.transform.position = path[pathIndex];
+            this.transform.localPosition = path[pathIndex];
 
             pathIndex++;
 
