@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 public class Level : MonoBehaviour {
+
     private Tile[,] levelTiles;
     private int[,] levelMap = {
         { 1, 5, 1, 1, 7, 1, 1, 1, 1, 3, 1, 1, 1, 4, 1 },
@@ -35,8 +36,11 @@ public class Level : MonoBehaviour {
     // Invoked when the map changes, e.g. when there's a hull breach
     public UnityEvent onMapChanged = new UnityEvent(); 
 
+	public static Level levelReference;
+
 	void Start () {
         levelTiles = new Tile[levelMap.GetLength(0), levelMap.GetLength(1)];
+		levelReference = this;
 
         // Create child gameobjects for each tile
         for (int y = 0; y < levelMap.GetLength(0); y++) {
@@ -352,4 +356,23 @@ public class Level : MonoBehaviour {
         }
         return tile.traversable;
     }
+
+	public Tile getRandomTraversableTile()
+	{
+		List<Tile> traversableTiles = new List<Tile> ();
+
+		//Loop through all tiles and add in traversable tiles
+		for (int y = 0; y < levelTiles.GetLength(0); y++) {
+			for (int x = 0; x < levelTiles.GetLength(1); x++) {
+				if (levelTiles[y,x] != null && 
+					isTilePassable(new Vector2(x,y))){
+					traversableTiles.Add (levelTiles [y, x]);
+				}
+			}
+		}
+			
+		Debug.Log (traversableTiles.Count);
+		//Now randomly select a tile
+		return traversableTiles[Random.Range(0,traversableTiles.Count)];
+	}
 }
