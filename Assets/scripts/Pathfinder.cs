@@ -53,6 +53,11 @@ public class Pathfinder : MonoBehaviour {
                     level.UpdateOccupancy(path[i-1], this.unitId);
                 }
             }
+        } else {
+            // Fire an event to let everyone know they might need to re-figure what they're doing
+            if (onPathFinished != null) {
+                onPathFinished.Invoke();
+            }
         }
     }
 

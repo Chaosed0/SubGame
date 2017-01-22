@@ -55,8 +55,15 @@ public class Ship : MonoBehaviour {
         // Unit is entering a place, check if it's a station we need to know about
         Tile tile = level.TileAtWorldPosition(unit.transform.position);
         if (tile.tileType != TileType.Normal) {
-            if (onStationEntered != null) {
-                onStationEntered.Invoke(unit, tile.tileType);
+            if (unit.IsOperating()) {
+                if (onStationEntered != null) {
+                    onStationEntered.Invoke(unit, tile.tileType);
+                }
+            } else {
+                // The unit entered the station but he isn't operating it (probably repairing)
+                if (onStationExited != null) {
+                    onStationExited.Invoke(unit, tile.tileType);
+                }
             }
         }
     }

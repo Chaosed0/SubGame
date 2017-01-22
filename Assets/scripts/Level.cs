@@ -109,10 +109,6 @@ public class Level : MonoBehaviour {
         if (tile.traversable != traversable) {
             tile.traversable = traversable;
 
-            if (onMapChanged != null) {
-                onMapChanged.Invoke();
-            }
-
             int tileId = TilePositionToTileId(tilePos);
             if (!traversable) {
                 if (!breaches.ContainsKey(tileId)) {
@@ -132,6 +128,10 @@ public class Level : MonoBehaviour {
                     breaches.Remove(tileId);
                     Destroy(breach.gameObject);
                 }
+            }
+
+            if (onMapChanged != null) {
+                onMapChanged.Invoke();
             }
         }
     }

@@ -40,6 +40,10 @@ public class Unit : MonoBehaviour {
         }
     }
 
+    public bool IsOperating() {
+        return state == State.Operating;
+    }
+
     private void OnBreachFixed() {
         breachBeingRepaired = null;
         // slight hack: invoke pathfinder's onPathFinished which resets our state and
