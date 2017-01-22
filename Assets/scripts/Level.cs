@@ -164,19 +164,19 @@ public class Level : MonoBehaviour {
         bool downExists = breaches.TryGetValue(TilePositionToTileId(downTilePosition), out downBreach);
         bool upExists = breaches.TryGetValue(TilePositionToTileId(upTilePosition), out upBreach);
 
-        if (exists) {
+        if (exists && IsTileInBounds(tilePosition)) {
             return breach;
         }
-        if (rightExists) {
+        if (rightExists && IsTileInBounds(rightTilePosition)) {
             return rightBreach;
         }
-        if (leftExists) {
+        if (leftExists && IsTileInBounds(leftTilePosition)) {
             return leftBreach;
         }
-        if (downExists) {
+        if (downExists && IsTileInBounds(downTilePosition)) {
             return downBreach;
         }
-        if (upExists) {
+        if (upExists && IsTileInBounds(upTilePosition)) {
             return upBreach;
         }
         return null;
@@ -342,16 +342,20 @@ public class Level : MonoBehaviour {
         int tileX = (int)tilePosition.x;
         int tileY = (int)tilePosition.y;
 
-        if (tileY >= 0 &&
-            tileX >= 0 &&
-            tileY < levelTiles.GetLength(0) &&
-            tileX < levelTiles.GetLength(1) &&
+        if (IsTileInBounds(tilePosition) &&
             levelTiles[tileY, tileX] != null)
         {
             return levelTiles[tileY, tileX];
         }
 
         return null;
+    }
+
+    private bool IsTileInBounds(Vector2 tilePosition) {
+        return (int)tilePosition.y >= 0 &&
+            (int)tilePosition.x >= 0 &&
+            (int)tilePosition.y < levelTiles.GetLength(0) &&
+            (int)tilePosition.x < levelTiles.GetLength(1);
     }
 
     private bool isTilePassable(Vector2 tilePosition) {
