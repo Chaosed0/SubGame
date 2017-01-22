@@ -7,7 +7,7 @@ public class SmallMonsterSpawner : MonoBehaviour {
 	public GameObject mainSubObject;
 	public GameObject smallMonsterPrefab; 
 
-	Vector2 maxMinSpeed = new Vector2 (0.8f,1.2f);
+	Vector2 maxMinSpeed = new Vector2 (2.8f,3.2f);
 
 	//This is a range to spawn at
 	Vector2 spawnBoxYDistance = new Vector2(-16f , 6f);

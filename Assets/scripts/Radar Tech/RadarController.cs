@@ -49,6 +49,7 @@ public class RadarController : MonoBehaviour {
 
 		Vector3 position = radarUIBase.transform.position + radarUIWidth * ratioToSub;
 
-		Instantiate (RedDotPrefab, position, transform.rotation);
+		GameObject reddot = Instantiate (RedDotPrefab, position, transform.rotation);
+		reddot.transform.SetParent (gameObject.transform);
 	}
 }
