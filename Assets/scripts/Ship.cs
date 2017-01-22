@@ -52,11 +52,11 @@ public class Ship : MonoBehaviour {
             //if (movingDown == true)
             if (moveFactor > 0)
             {
-                MoveShipDown(true);
+                MoveShipDown(true, moveSpeed);
             }
             else
             {
-                MoveShipDown(false);
+                MoveShipDown(false, 0);
             }
         }
     }
@@ -107,12 +107,12 @@ public class Ship : MonoBehaviour {
     ParticleSystem.Particle[] particles;
 
 
-    public void MoveShipDown(bool sendMoving)
+    public void MoveShipDown(bool sendMoving, float moveAmount)
     {
-        //transform.position = new Vector3(transform.position.x, transform.position.y - (moveAmount), transform.position.z);
-        //level.transform.position = new Vector3(level.transform.position.x, level.transform.position.y - (moveAmount), level.transform.position.z);
+        transform.position = new Vector3(transform.position.x, transform.position.y - (moveAmount), transform.position.z);
+        level.transform.position = new Vector3(level.transform.position.x, level.transform.position.y - (moveAmount), level.transform.position.z);
 
-        if (sendMoving == true)
+        /*if (sendMoving == true)
         {
             if (isMoving == false)
             {
@@ -139,11 +139,7 @@ public class Ship : MonoBehaviour {
                     bubbleParticles[h].GetComponent<ParticleSystem>().startSpeed = shipMovingBubbleSpeed;
                 }
 
-                /*for (int i = 0; i < bubbleParticles.Length; i++)
-                {
-                    bubbleParticles[i].GetComponent<ParticleSystem>().velocityOverLifetime = new Vector3(0, 0, 1);
-                }*/
-
+                
                 isMoving = true;
             }
         }
@@ -174,14 +170,11 @@ public class Ship : MonoBehaviour {
                     bubbleParticles[h].GetComponent<ParticleSystem>().startSpeed = shipStoppedBubbleSpeed;
                 }
 
-                /*for (int i = 0; i < bubbleParticles.Length; i++)
-                {
-                    bubbleParticles[i].GetComponent<ParticleSystem>().velocityOverLifetime = new Vector3(0, 0, 0);
-                }*/
+                
 
                 isMoving = false;
             }
-        }
+        }*/
 
         //bubble changing here
        /* if (isMoving == false)

@@ -27,11 +27,14 @@ public class Kitchen : MonoBehaviour {
     {
         if (unitsFoodSack != null && !unitsFoodSack.IsBagFull())
         {
-            foodRegenCountdown -= Time.deltaTime * currentFoodRegenSpeed;
-            if (foodRegenCountdown <= 0)
+            if (lostPower == false)
             {
-                unitsFoodSack.AddToSack();
-                ResetFoodRegenCountdown();
+                foodRegenCountdown -= Time.deltaTime * currentFoodRegenSpeed;
+                if (foodRegenCountdown <= 0)
+                {
+                    unitsFoodSack.AddToSack();
+                    ResetFoodRegenCountdown();
+                }
             }
         }
 	}

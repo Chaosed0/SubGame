@@ -6,6 +6,10 @@ public class AudioBubble : MonoBehaviour {
 
     public float totalSound;
 
+    public float minScale;//this is the scale that the bubble is at when at 0 volume
+
+    public BubbleTriggerScript bubbleTriggerScript;
+
 	// Use this for initialization
 	void Start () 
     {
@@ -20,7 +24,8 @@ public class AudioBubble : MonoBehaviour {
 
     void LateUpdate()
     {
-		transform.localScale = Vector3.Lerp(transform.localScale, new Vector3(totalSound, totalSound, totalSound), 0.1f);
+		transform.localScale = Vector3.Lerp(transform.localScale, new Vector3(totalSound + minScale, totalSound + minScale, totalSound + minScale), 0.1f);
+        bubbleTriggerScript.bubblesTotalAudio = totalSound;
 
         totalSound = 0;
     }

@@ -7,7 +7,8 @@ public class SmallMonsterSpawner : MonoBehaviour {
 	public GameObject mainSubObject;
 	public GameObject smallMonsterPrefab; 
 
-	Vector2 maxMinSpeed = new Vector2 (2.8f,3.2f);
+	//Vector2 maxMinSpeed = new Vector2 (2.8f,3.2f);
+    Vector2 maxMinSpeed = new Vector2 (2.8f, 3.2f);
 
 	//This is a range to spawn at
 	Vector2 spawnBoxYDistance = new Vector2(-30f , 6f);
@@ -29,7 +30,7 @@ public class SmallMonsterSpawner : MonoBehaviour {
 
 		if(Input.GetKeyDown(KeyCode.A))
 		{
-			SpawnMonstersInTime (1, 10);
+			SpawnMonstersInTime (1, 20);
 		}
 	}
 
@@ -70,6 +71,8 @@ public class SmallMonsterSpawner : MonoBehaviour {
 
 		//Generate velocity
 		smallMonsterScript.speed = Random.Range(maxMinSpeed.x, maxMinSpeed.y);
+
+        print("monster");
 	}
 
 	void OnDrawGizmos()

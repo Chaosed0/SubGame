@@ -16,11 +16,11 @@ public class AutomaticSpawnerTemp : MonoBehaviour {
 
 	IEnumerator tempSpawner()
 	{
-		float cycleTime = 5f;
+        float cycleTime = 20;//5f;
 
 		while (true) 
 		{
-			monsterSpawner.SpawnMonstersInTime (2, cycleTime);
+			monsterSpawner.SpawnMonstersInTime (1, cycleTime);
 
 			yield return new WaitForSeconds (cycleTime);
 		}

@@ -10,7 +10,7 @@ public class SmallMonsterScript : MonoBehaviour {
 
 	public float speed; 
 
-	private float lifeTime = 25f;
+	private float lifeTime = 120;
 
 	public GameObject DetectedImagePrefab;
 

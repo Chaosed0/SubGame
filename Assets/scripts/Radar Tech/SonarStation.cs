@@ -31,19 +31,22 @@ public class SonarStation : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		if (isOccupied) 
+        if (isOccupied) 
 		{
-			//Emit when we can
-			if (sonarCurrentCooldown <= 0) 
-			{
-				sonarEmitter.CreatePulse ();
-				sonarCurrentCooldown = sonarMaxCooldown;
-			} 
-			//else countdown
-			else 
-			{
-				sonarCurrentCooldown -= Time.deltaTime * sonarCooldownMultiplier;
-			}
+            if (lostPower == false)
+            {
+                //Emit when we can
+                if (sonarCurrentCooldown <= 0)
+                {
+                    sonarEmitter.CreatePulse();
+                    sonarCurrentCooldown = sonarMaxCooldown;
+                } 
+    			//else countdown
+    			else
+                {
+                    sonarCurrentCooldown -= Time.deltaTime * sonarCooldownMultiplier;
+                }
+            }
 		}
 		
 	}

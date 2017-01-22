@@ -29,7 +29,7 @@ public class AddsToAudioBubble : MonoBehaviour {
         {
             if (makingSound == true)
             {
-                bubble.totalSound += amount * Random.Range(0.9f, 1.1f);
+                bubble.totalSound += amount;// * Random.Range(0.9f, 1.1f);
             }
         }
     }
