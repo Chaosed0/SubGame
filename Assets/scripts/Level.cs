@@ -6,13 +6,21 @@ using UnityEngine.Events;
 public class Level : MonoBehaviour {
 
     private Tile[,] levelTiles;
-    private int[,] levelMap = {
+   /* private int[,] levelMap = {
         { 1, 5, 1, 1, 1, 8, 1, 1, 1, 3, 1, 1, 1, 4, 1 },
         { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
         { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
         { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
         { 1, 6, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 7, 1 },
-    };
+    };*/
+
+	private int[,] levelMap = {
+		{ 0, 0, 0, 0, 0, 0, 0, 1, 4, 1, 0, 0, 0, 0, 0, 0, 0 },
+		{ 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+		{ 1, 1, 5, 1, 1, 0, 0, 1, 1, 1, 7, 1, 1, 0, 0, 0, 0 },
+		{ 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 3 },
+		{ 1, 6, 1, 1, 1, 0, 0, 1, 1, 7, 1, 1, 1, 0, 0, 0, 0 },
+	};
 
     private Dictionary<int, Breach> breaches = new Dictionary<int, Breach>();
 
@@ -99,8 +107,7 @@ public class Level : MonoBehaviour {
     }
 
     public bool IsTraversable(Vector2 worldPoint) {
-        Vector2 tilePos = WorldToTilePosition(worldPoint);
-        Tile tile = levelTiles[(int)tilePos.y, (int)tilePos.x];
+        Tile tile = TileAtWorldPosition(worldPoint);
         if (tile == null) {
             return false;
         }

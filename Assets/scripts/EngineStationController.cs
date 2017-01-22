@@ -7,11 +7,12 @@ public class EngineStationController : MonoBehaviour {
     //Reference to the ship 
     public Ship ship;
 
-    public bool engineOn;
+    public bool engineOn = true;
     public AudioSource engineSound;
 
     public Light[] normalLights;
     public Light[] lowLights;
+    public Unit[] units;
 
     public SonarStation sonar1;
     public SonarStation sonar2;
@@ -25,6 +26,8 @@ public class EngineStationController : MonoBehaviour {
     {
         //ship.onStationEntered.AddListener (OnEnterEffect);
         //ship.onStationExited.AddListener (OnExitEffect);
+
+        units = FindObjectsOfType<Unit>();
 	}
 	
 	// Update is called once per frame
@@ -41,7 +44,7 @@ public class EngineStationController : MonoBehaviour {
         }
 
         this.engineOn = engineOn;
-        if (engineOn == true)
+        if (!engineOn)
         {
             engineSound.mute = true;
             engineSound.gameObject.GetComponent<AddsToAudioBubble>().makingSound = false;
@@ -52,7 +55,6 @@ public class EngineStationController : MonoBehaviour {
             }
 
             ShutDownSystems();
-            engineOn = false;
         }
         else
         {
@@ -65,7 +67,6 @@ public class EngineStationController : MonoBehaviour {
             }
 
             TurnOnSystems();
-            engineOn = true;
         }
     }
 
@@ -85,6 +86,10 @@ public class EngineStationController : MonoBehaviour {
         sonar2.lostPower = true;
         kitchen.lostPower = true;
         steering.lostPower = true;
+
+        foreach (Unit unit in units) {
+            unit.SetStressMultiplier(5.0f);
+        }
     }
 
     public void TurnOnSystems()
@@ -93,5 +98,9 @@ public class EngineStationController : MonoBehaviour {
         sonar2.lostPower = false;
         kitchen.lostPower = false;
         steering.lostPower = false;
+
+        foreach (Unit unit in units) {
+            unit.SetStressMultiplier(1.0f);
+        }
     }
 }

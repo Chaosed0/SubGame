@@ -62,7 +62,7 @@ public class UnitPanelController : MonoBehaviour {
 	}
 
     void engineToggleChanged(bool newValue) {
-        engineController.SetEngineOn(!engineToggle.isOn);
+        engineController.SetEngineOn(newValue);
     }
 
     void OnFoodCountChanged(int recRoomFood) {
