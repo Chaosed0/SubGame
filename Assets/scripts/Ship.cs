@@ -35,6 +35,8 @@ public class Ship : MonoBehaviour {
 
     void Update () {
         _depth += moveSpeed * moveFactor * Time.deltaTime;
+        MoveShipDown(moveSpeed);
+
     }
 
     public void SetMoveFactor(float moveFactor) {
@@ -79,5 +81,11 @@ public class Ship : MonoBehaviour {
         if (type == TileType.Pilot) {
             moveFactor = 0.0f;
         }
+    }
+
+    public void MoveShipDown(float moveAmount)
+    {
+        transform.position = new Vector3(transform.position.x, transform.position.y - (moveAmount), transform.position.z);
+        level.transform.position = new Vector3(level.transform.position.x, level.transform.position.y - (moveAmount), level.transform.position.z);
     }
 }

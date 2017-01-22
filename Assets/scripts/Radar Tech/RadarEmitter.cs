@@ -6,6 +6,8 @@ public class RadarEmitter : MonoBehaviour {
 
 	public GameObject RadarPulsePrefab;
 
+    public AudioSource radarSound;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -27,6 +29,7 @@ public class RadarEmitter : MonoBehaviour {
 	{
 
 		Instantiate (RadarPulsePrefab, transform.position, transform.rotation);
+        radarSound.Play();
 
 	}
 }

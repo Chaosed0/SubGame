@@ -23,6 +23,8 @@ public class Pathfinder : MonoBehaviour {
 
 	void Start () {
         level.onMapChanged.AddListener(OnRepathNeeded);
+        vc = GetComponent<VoiceController>();
+        transform.parent = level.transform;
 	}
 
 	void Update () {
