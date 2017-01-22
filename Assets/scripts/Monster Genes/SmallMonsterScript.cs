@@ -53,6 +53,9 @@ public class SmallMonsterScript : MonoBehaviour {
 
 		//Slowly count down alpha
 		StartCoroutine(DecreaseAlphaCoroutine(newAfterImage.GetComponent<SpriteRenderer>(), remainingFadeTime));
+
+		//Put red dot on UI
+		RadarController.mainRadarController.CreateRedDot(transform.position);
 	}
 
 	IEnumerator DecreaseAlphaCoroutine( SpriteRenderer sprite, float lifeTime )

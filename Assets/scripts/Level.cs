@@ -6,10 +6,10 @@ using UnityEngine.Events;
 public class Level : MonoBehaviour {
     private Tile[,] levelTiles;
     private int[,] levelMap = {
-        { 1, 1, 1, 0, 0, 1, 1, 1 },
+        { 1, 1, 1, 0, 0, 3, 1, 1 },
         { 0, 1, 0, 0, 0, 0, 0, 1 },
         { 1, 1, 1, 1, 1, 1, 1, 1 },
-        { 1, 0, 0, 0, 1, 0, 0, 1 },
+        { 1, 0, 0, 0, 2, 0, 0, 1 },
         { 1, 1, 1, 1, 1, 1, 1, 1 },
     };
 
@@ -20,6 +20,13 @@ public class Level : MonoBehaviour {
     public Sprite breachOverlay;
     public Tile tilePrefab;
     public Vector2 tileSize;
+
+    public int tileBreakRoom;
+    public int tilePilotRoom;
+	public int tileSonar1Room;
+	public int tileSonar2Room;
+	public int tileEngineRoom;
+	public int tileKitchenRoom;
 
     public Vector2 tileScale = new Vector2(2.0f, 2.0f);
     public float pixelsPerUnit = 108.0f;
@@ -44,6 +51,24 @@ public class Level : MonoBehaviour {
                     SpriteRenderer tileSpriteRenderer = tile.GetComponent<SpriteRenderer>();
                     tileSpriteRenderer.sprite = tileImg;
                     levelTiles[y,x] = tile;
+
+                    if (tileId == tileBreakRoom) {
+                        tile.tileType = TileType.Break;
+                    } else if (tileId == tilePilotRoom) {
+                        tile.tileType = TileType.Pilot;
+                    }
+					else if (tileId == tileSonar1Room) {
+						tile.tileType = TileType.Sonar1;
+					}
+					else if (tileId == tileSonar2Room) {
+						tile.tileType = TileType.Sonar2;
+					}
+					else if (tileId == tileEngineRoom) {
+						tile.tileType = TileType.Engine;
+					}
+					else if (tileId == tileKitchenRoom) {
+						tile.tileType = TileType.Kitchen;
+					}
                 } else {
                     levelTiles[y,x] = null;
                 }
