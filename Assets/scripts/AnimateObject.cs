@@ -25,6 +25,11 @@ public class AnimateObject : MonoBehaviour {
     public float panicAnimTimerBase;
     public float panicAnimTimer;
 
+    public bool playingClimb;
+    public Sprite[] climbAnim;
+    public float climbAnimTimerBase;
+    public float climbAnimTimer;
+
 	// Use this for initialization
 	void Start () 
     {
@@ -84,6 +89,19 @@ public class AnimateObject : MonoBehaviour {
                 GoToNextFrame(panicAnim);
 
                 panicAnimTimer = panicAnimTimerBase;
+            }
+        }
+        else if(playingClimb == true)
+        {
+            if (climbAnimTimer > 0)
+            {
+                climbAnimTimer -= Time.deltaTime;
+            }
+            else
+            {
+                GoToNextFrame(climbAnim);
+
+                climbAnimTimer = climbAnimTimerBase;
             }
         }
 	}
