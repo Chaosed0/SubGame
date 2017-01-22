@@ -6,8 +6,8 @@ using UnityEngine.Events;
 public class Level : MonoBehaviour {
     private Tile[,] levelTiles;
     private int[,] levelMap = {
-        { 1, 1, 1, 0, 0, 3, 1, 1 },
-        { 0, 1, 0, 0, 0, 0, 0, 1 },
+        { 1, 1, 1, 0, 0, 3, 1, 4 },
+        { 5, 1, 0, 0, 0, 0, 0, 1 },
         { 1, 1, 1, 1, 1, 1, 1, 1 },
         { 1, 0, 0, 0, 2, 0, 0, 1 },
         { 1, 1, 1, 1, 1, 1, 1, 1 },
