@@ -8,6 +8,7 @@ public class Ship : MonoBehaviour {
     private float moveFactor = 0.0f;
 
     public float moveSpeed = 10.0f;
+    public float maxDepth = 100.0f;
 
     public Level level;
     public Unit[] crew;
@@ -43,7 +44,6 @@ public class Ship : MonoBehaviour {
         {
             MoveShipDown(moveSpeed);
         }
-
     }
 
     public void SetMoveFactor(float moveFactor) {
@@ -93,5 +93,9 @@ public class Ship : MonoBehaviour {
     {
         transform.position = new Vector3(transform.position.x, transform.position.y - (moveAmount), transform.position.z);
         level.transform.position = new Vector3(level.transform.position.x, level.transform.position.y - (moveAmount), level.transform.position.z);
+    }
+
+    public float GetDepthFraction() {
+        return depth / maxDepth;
     }
 }

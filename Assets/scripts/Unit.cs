@@ -44,7 +44,7 @@ public class Unit : MonoBehaviour {
             // Panic!
             pathfinder.onPathFinished.Invoke();
         } else if (state == State.Panicked) {
-            stress -= restingStressLoss * Time.deltaTime;
+            stress -= panickingStressLoss * Time.deltaTime;
             if (stress <= panicOffThreshold) {
                 // unpanic...
                 state = State.Idling;

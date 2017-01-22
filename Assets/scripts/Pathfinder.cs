@@ -20,6 +20,7 @@ public class Pathfinder : MonoBehaviour {
 
     public UnityEvent onPathFinished = new UnityEvent(); 
     public UnityEvent onPathStarted = new UnityEvent();
+    public UnityEvent onSelected = new UnityEvent();
 
     public VoiceController vc;
 
@@ -35,6 +36,10 @@ public class Pathfinder : MonoBehaviour {
 	}
 
 	void Update () {
+        if (unit.IsPanicked()) {
+            return;
+        }
+
         if (isPathing) {
             NavigateToNextPoint();
         }
@@ -109,9 +114,12 @@ public class Pathfinder : MonoBehaviour {
     }
 
     void OnMouseDown() {
-        if (!GetComponent<Unit>().IsPanicked()) {
-            playerInput.SelectPathfinder(this);
+        playerInput.SelectPathfinder(this);
+        
+        if (onSelected != null) {
+            onSelected.Invoke();
         }
+
         if (vc != null)
         {
             vc.PlayShortVoiceClip();

@@ -25,6 +25,11 @@ public class UnitStats : MonoBehaviour {
     [SerializeField]
     private float sanity = 1.0f;
 
+    public Sprite goodPortrait;
+    public Sprite mediumPortrait;
+    public Sprite badPortrait;
+    public Sprite panicPortrait;
+
     public float Steering { get { return steering; } }
     public float Sonar { get { return sonar; } }
     public float Repair { get { return repair; } }

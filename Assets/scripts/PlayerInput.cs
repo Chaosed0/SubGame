@@ -35,7 +35,7 @@ public class PlayerInput : MonoBehaviour {
         }
 
         Vector3 worldPoint = camera.ScreenToWorldPoint(mousePosition);
-        if (selectedPathfinder != null) {
+        if (selectedPathfinder != null && !selectedPathfinder.GetComponent<Unit>().IsPanicked()) {
             // Try to move the last selected thing to the selected tile
             Tile tile = level.TileAtWorldPosition(new Vector2(worldPoint.x, worldPoint.y));
 
