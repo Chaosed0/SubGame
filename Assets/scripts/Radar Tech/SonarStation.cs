@@ -14,6 +14,7 @@ public class SonarStation : MonoBehaviour {
 	//Time for a normally skilled person to trigger
 	private float sonarMaxCooldown = 5f;
 	private float sonarCurrentCooldown = 0f;
+    private float sonarCooldownMultiplier = 0f;
 	private bool isOccupied = false;
 
 	public RadarEmitter sonarEmitter;
@@ -38,7 +39,7 @@ public class SonarStation : MonoBehaviour {
 			//else countdown
 			else 
 			{
-				sonarCurrentCooldown -= Time.deltaTime;
+				sonarCurrentCooldown -= Time.deltaTime * sonarCooldownMultiplier;
 			}
 		}
 		
@@ -59,7 +60,7 @@ public class SonarStation : MonoBehaviour {
 		}
 
 		Debug.Log ("Entered Sonar");
-
+	    sonarCooldownMultiplier = 1.0f * unit.unitStats.Sonar;
 		isOccupied = true;
 	}
 
@@ -79,6 +80,7 @@ public class SonarStation : MonoBehaviour {
 		}
 
 		Debug.Log ("Exited Sonar");
+	    sonarCooldownMultiplier = 0f;
 		isOccupied = false;
 	}
 }

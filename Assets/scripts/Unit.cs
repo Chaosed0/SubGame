@@ -9,6 +9,7 @@ public class Unit : MonoBehaviour {
     private State state = State.Idling;
     private Breach breachBeingRepaired = null;
 
+    public UnitStats unitStats;
     public float ambientStressGain = 0.1f;
     public float restingStressLoss = 0.25f;
 
@@ -26,7 +27,9 @@ public class Unit : MonoBehaviour {
         pathfinder = GetComponent<Pathfinder>();
         pathfinder.onPathStarted.AddListener(OnPathStarted);
         pathfinder.onPathFinished.AddListener(OnPathFinished);
-    }
+
+	    unitStats = GetComponent<UnitStats>();
+	}
 
     void Update() {
         if (state == State.Resting) {
@@ -36,7 +39,7 @@ public class Unit : MonoBehaviour {
         }
 
         if (state == State.Repairing) {
-            breachBeingRepaired.doWorkOnBreach();
+            breachBeingRepaired.doWorkOnBreach(unitStats.Repair);
         }
     }
 
