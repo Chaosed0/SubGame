@@ -128,7 +128,7 @@ public class Level : MonoBehaviour {
             if (!traversable) {
                 if (!breaches.ContainsKey(tileId)) {
                     Vector3 position = positionForTileGameObject((int)tilePos.x, (int)tilePos.y);
-                    Breach breach = Instantiate<Breach>(breachPrefab, position, Quaternion.identity, this.transform);
+                    Breach breach = Instantiate<Breach>(breachPrefab, new Vector3(position.x, position.y, -3), Quaternion.identity, this.transform);
                     breach.level = this;
                     breach.tile = tile;
 
