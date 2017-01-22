@@ -373,7 +373,6 @@ public class Level : MonoBehaviour {
 			
 		Debug.Log (traversableTiles.Count);
 		//Now randomly select a tile
-		return traversableTiles[0];
-			//Random.Range(0,traversableTiles.Count);
+		return traversableTiles[Random.Range(0,traversableTiles.Count)];
 	}
 }

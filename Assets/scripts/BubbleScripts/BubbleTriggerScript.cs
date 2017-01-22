@@ -21,7 +21,7 @@ public class BubbleTriggerScript : MonoBehaviour {
 		
 		if (monsterScript = collider.GetComponent<SmallMonsterScript> ()) 
 		{
-			monsterScript.TriggerToAttack (transform.position);
+			monsterScript.TriggerToAttack (transform);
 		}
 	}
 

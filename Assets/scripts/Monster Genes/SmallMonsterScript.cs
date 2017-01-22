@@ -82,7 +82,7 @@ public class SmallMonsterScript : MonoBehaviour {
 		Destroy (sprite.gameObject);
 	}
 
-	public void TriggerToAttack(Vector3 target)
+	public void TriggerToAttack(Transform target)
 	{
 		if (hasTriggeredAttack)
 			return;
@@ -94,7 +94,7 @@ public class SmallMonsterScript : MonoBehaviour {
 
 		//Change direction to ship middle
 		speed *=.1f;
-		StartCoroutine(StartAttack (target - transform.position, 20, target));
+		StartCoroutine(StartAttack (target.position - transform.position, 20, target));
 
 
 		/*
@@ -106,7 +106,7 @@ public class SmallMonsterScript : MonoBehaviour {
 */
 	}
 
-	IEnumerator StartAttack(Vector3 targetDirection, float targetSpeed, Vector3 target)
+	IEnumerator StartAttack(Vector3 targetDirection, float targetSpeed, Transform target)
 	{
 		float lerpTime = 1f;
 
@@ -125,7 +125,7 @@ public class SmallMonsterScript : MonoBehaviour {
 		speed = targetSpeed;
 
 		//Check if close enough, if yes trigger hull breach
-		while(Vector3.Distance(target, transform.position) < 10f )
+		while(Vector3.Distance(target.position, transform.position) > 15f )
 		{
 			yield return new WaitForEndOfFrame ();
 		}
