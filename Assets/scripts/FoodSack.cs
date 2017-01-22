@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class FoodSack : MonoBehaviour
 {
@@ -9,6 +10,10 @@ public class FoodSack : MonoBehaviour
 
     private int numOfFood = 0;
     private UnitStats unitStats;
+
+    [System.Serializable]
+    public class FoodCountChangedEvent : UnityEvent<int> { };
+    public FoodCountChangedEvent onFoodCountChanged = new FoodCountChangedEvent();
 
     void Start()
     {
@@ -41,6 +46,9 @@ public class FoodSack : MonoBehaviour
         if (numOfFood < maxCapacity)
         {
             numOfFood++;
+            if (onFoodCountChanged != null) {
+                onFoodCountChanged.Invoke(numOfFood);
+            }
             return true;
         }
         return false;
@@ -50,6 +58,11 @@ public class FoodSack : MonoBehaviour
     {
         int totalFood = numOfFood;
         numOfFood = 0;
+
+        if (onFoodCountChanged != null) {
+            onFoodCountChanged.Invoke(numOfFood);
+        }
+
         return totalFood;
     }
 }

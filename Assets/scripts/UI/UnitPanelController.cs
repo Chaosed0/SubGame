@@ -12,6 +12,10 @@ public class UnitPanelController : MonoBehaviour {
     public Toggle engineToggle;
     public CanvasGroup engineToggleGroup;
 
+    public Text recRoomFoodText;
+    public CanvasGroup recRoomFoodGroup;
+
+    public RecRoom recRoom;
     public EngineStationController engineController;
     public Ship ship;
 
@@ -30,6 +34,7 @@ public class UnitPanelController : MonoBehaviour {
 
         ship.onStationEntered.AddListener(OnStationEntered);
         ship.onStationExited.AddListener(OnStationExited);
+        recRoom.onFoodCountChanged.AddListener(OnFoodCountChanged);
     }
 
     void Update () {
@@ -60,17 +65,33 @@ public class UnitPanelController : MonoBehaviour {
         engineController.SetEngineOn(!engineToggle.isOn);
     }
 
+    void OnFoodCountChanged(int recRoomFood) {
+        recRoomFoodText.text = "Food in rec room: " + recRoomFood;
+    }
+
     void OnStationEntered(Unit unit, TileType type) {
-        if (type == TileType.Engine && unit == selectedUnit) {
+        if (unit != selectedUnit) {
+            return;
+        }
+
+        if (type == TileType.Engine) {
             engineText.text = "ENGINE";
             engineToggle.isOn = engineController.IsEngineOn();
             DisplayToggle();
+        } else if (type == TileType.Rec) {
+            recRoomFoodGroup.alpha = 1.0f;
         }
     }
 
     void OnStationExited(Unit unit, TileType type) {
-        if (type == TileType.Engine && unit == selectedUnit) {
+        if (unit != selectedUnit) {
+            return;
+        }
+
+        if (type == TileType.Engine) {
             HideToggle();
+        } else if (type == TileType.Rec) {
+            recRoomFoodGroup.alpha = 0.0f;
         }
     }
 
@@ -89,6 +110,12 @@ public class UnitPanelController : MonoBehaviour {
             DisplayToggle();
         } else {
             HideToggle();
+        }
+
+        if (type == TileType.Rec) {
+            recRoomFoodGroup.alpha = 1.0f;
+        } else {
+            recRoomFoodGroup.alpha = 0.0f;
         }
     }
 

@@ -51,17 +51,19 @@ public class Kitchen : MonoBehaviour {
 
     void OnEnterEffect(Unit unit, TileType type)
     {
-        if (lostPower == false)
-        {
-            unitsFoodSack = unit.GetComponent<FoodSack>();
-            ResetFoodRegenCountdown();
-            if (cookingStatChangesFoodRegenRate)
+        if (type == TileType.Kitchen) {
+            if (lostPower == false)
             {
-                currentFoodRegenSpeed = unit.unitStats.Cooking;
-            }
-            else
-            {
-                currentFoodRegenSpeed = 1;
+                unitsFoodSack = unit.GetComponent<FoodSack>();
+                ResetFoodRegenCountdown();
+                if (cookingStatChangesFoodRegenRate)
+                {
+                    currentFoodRegenSpeed = unit.unitStats.Cooking;
+                }
+                else
+                {
+                    currentFoodRegenSpeed = 1;
+                }
             }
         }
     }
