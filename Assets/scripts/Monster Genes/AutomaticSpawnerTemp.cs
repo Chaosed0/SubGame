@@ -8,6 +8,14 @@ public class AutomaticSpawnerTemp : MonoBehaviour {
 
 	public SmallMonsterSpawner monsterSpawner;
 
+	//Time wise(horizontal), max (value of 1) is 5
+	//Vertical, max (value of 1)
+	public AnimationCurve curve;
+
+	public Ship ship;
+
+	float maxSpawnPerTwentySeconds = 3f;
+
 	// Use this for initialization
 	void Start () {
 
@@ -20,7 +28,14 @@ public class AutomaticSpawnerTemp : MonoBehaviour {
 
 		while (true) 
 		{
-			monsterSpawner.SpawnMonstersInTime (1, cycleTime);
+
+			float t = ship._depth / 5f;
+			int numberMonster = Mathf.RoundToInt(curve.Evaluate (t) * maxSpawnPerTwentySeconds);
+
+			Debug.Log ("curve" + curve.Evaluate (t));
+			Debug.Log ("num mon:" + numberMonster);
+
+			monsterSpawner.SpawnMonstersInTime (numberMonster, cycleTime);
 
 			yield return new WaitForSeconds (cycleTime);
 		}

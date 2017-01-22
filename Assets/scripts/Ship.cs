@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 public class Ship : MonoBehaviour {
-    private float _depth = 0.0f;
+    public float _depth = 0.0f;
     private float moveFactor = 0.0f;
 
     private int[] depthMilestones = { 5000, 10000, 15000, 20000, 25000, 30000 };
