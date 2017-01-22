@@ -19,6 +19,8 @@ public class Pathfinder : MonoBehaviour {
     public UnityEvent onPathFinished = new UnityEvent(); 
     public UnityEvent onPathStarted = new UnityEvent();
 
+    public VoiceController vc;
+
 	void Start () {
         level.onMapChanged.AddListener(OnRepathNeeded);
 	}
@@ -79,6 +81,10 @@ public class Pathfinder : MonoBehaviour {
 
     void OnMouseDown() {
         playerInput.SelectPathfinder(this);
+        if (vc != null)
+        {
+            vc.PlayShortVoiceClip();
+        }
     }
 
     void OnTriggerEnter2D(Collider2D collision) {
