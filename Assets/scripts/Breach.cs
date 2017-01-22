@@ -10,8 +10,8 @@ public class Breach : MonoBehaviour {
 
     public UnityEvent onBreachFixed = new UnityEvent();
 
-    public void doWorkOnBreach() {
-        workLeft -= Time.deltaTime;
+    public void doWorkOnBreach(float repairMulitplier) {
+        workLeft -= Time.deltaTime * repairMulitplier;
         if (workLeft <= 0.0f) {
             level.SetTraversable(tile.transform.position, true);
             if (onBreachFixed != null) {

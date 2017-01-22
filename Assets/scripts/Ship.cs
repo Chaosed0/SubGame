@@ -29,8 +29,8 @@ public class Ship : MonoBehaviour {
             pathfinder.onPathFinished.AddListener(() => OnPathFinished(member));
         }
 
-        onStationEntered.AddListener(OnStationEntered);
-        onStationExited.AddListener(OnStationExited);
+        onStationEntered.AddListener(OnPilotStationEntered);
+        onStationExited.AddListener(OnPilotStationExited);
 	}
 
     void Update () {
@@ -70,14 +70,13 @@ public class Ship : MonoBehaviour {
         }
     }
 
-    private void OnStationEntered(Unit unit, TileType type) {
+    private void OnPilotStationEntered(Unit unit, TileType type) {
         if (type == TileType.Pilot) {
-            // TODO: Check if it's a specialist
-            moveFactor = 1.0f;
+            moveFactor = 1.0f * unit.unitStats.Steering;
         }
     }
 
-    private void OnStationExited(Unit unit, TileType type) {
+    private void OnPilotStationExited(Unit unit, TileType type) {
         if (type == TileType.Pilot) {
             moveFactor = 0.0f;
         }
