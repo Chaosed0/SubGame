@@ -6,6 +6,10 @@ public enum TileType {
     Normal,
     Pilot,
     Break,
+	Sonar1,
+	Sonar2,
+	Kitchen,
+	Engine
 }
 
 public class Tile : MonoBehaviour {

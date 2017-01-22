@@ -23,6 +23,10 @@ public class Level : MonoBehaviour {
 
     public int tileBreakRoom;
     public int tilePilotRoom;
+	public int tileSonar1Room;
+	public int tileSonar2Room;
+	public int tileEngineRoom;
+	public int tileKitchenRoom;
 
     public Vector2 tileScale = new Vector2(2.0f, 2.0f);
     public float pixelsPerUnit = 108.0f;
@@ -53,6 +57,18 @@ public class Level : MonoBehaviour {
                     } else if (tileId == tilePilotRoom) {
                         tile.tileType = TileType.Pilot;
                     }
+					else if (tileId == tileSonar1Room) {
+						tile.tileType = TileType.Sonar1;
+					}
+					else if (tileId == tileSonar2Room) {
+						tile.tileType = TileType.Sonar2;
+					}
+					else if (tileId == tileEngineRoom) {
+						tile.tileType = TileType.Engine;
+					}
+					else if (tileId == tileKitchenRoom) {
+						tile.tileType = TileType.Kitchen;
+					}
                 } else {
                     levelTiles[y,x] = null;
                 }
