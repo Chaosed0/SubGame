@@ -58,7 +58,7 @@ public class Unit : MonoBehaviour {
             }
         } else {
             if (state == State.Resting) {
-                stress -= restingStressLoss * Time.deltaTime;
+                //stress -= restingStressLoss * Time.deltaTime;
                 GetComponent<AddsToAudioBubble>().makingRecRoomSound = true;
             } else {
                 stress += ambientStressGain * Time.deltaTime;
@@ -138,9 +138,8 @@ public class Unit : MonoBehaviour {
             state = State.Repairing;
         } else {
             Tile tile = pathfinder.level.TileAtWorldPosition(this.transform.position);
-            if (tile.tileType == TileType.Rec) {
-                state = State.Resting;
-            } else if (tile.tileType != TileType.Normal) {
+
+            if (tile.tileType != TileType.Normal) {
                 state = State.Operating;
             } else {
                 state = State.Idling;
