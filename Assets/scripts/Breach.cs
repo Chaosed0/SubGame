@@ -1,3 +1,4 @@
+
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +13,7 @@ public class Breach : MonoBehaviour {
 
     public void doWorkOnBreach(float repairMulitplier) {
         workLeft -= Time.deltaTime * repairMulitplier;
+
         if (workLeft <= 0.0f) {
             level.SetTraversable(tile.transform.position, true);
             if (onBreachFixed != null) {

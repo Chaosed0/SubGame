@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+[RequireComponent(typeof (Unit))]
 public class Pathfinder : MonoBehaviour {
     private int pathIndex = 0;
     private bool isPathing = false;
     private bool isSlowed = false;
     private Vector2[] path;
     private Vector2 destination;
+    private Unit unit;
 
     public float moveSpeed = 2.0f;
     public float slowMoveSpeed = 1.0f;
@@ -22,9 +24,14 @@ public class Pathfinder : MonoBehaviour {
     public VoiceController vc;
 
 	void Start () {
+        unit = GetComponent<Unit>();
         level.onMapChanged.AddListener(OnRepathNeeded);
+
         vc = GetComponent<VoiceController>();
         transform.parent = level.transform;
+
+        unit.onPanicked.AddListener(OnPanicked);
+
 	}
 
 	void Update () {
@@ -44,6 +51,12 @@ public class Pathfinder : MonoBehaviour {
         if (onPathStarted != null) {
             onPathStarted.Invoke();
         }
+    }
+
+    private void OnPanicked() {
+        // Immediately stop moving
+        this.isPathing = false;
+        level.UpdateOccupancy(this.transform.position, this.unitId);
     }
 
     private void OnRepathNeeded() {
@@ -96,7 +109,9 @@ public class Pathfinder : MonoBehaviour {
     }
 
     void OnMouseDown() {
-        playerInput.SelectPathfinder(this);
+        if (!GetComponent<Unit>().IsPanicked()) {
+            playerInput.SelectPathfinder(this);
+        }
         if (vc != null)
         {
             vc.PlayShortVoiceClip();
