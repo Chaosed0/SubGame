@@ -59,10 +59,10 @@ public class Unit : MonoBehaviour {
         } else {
             if (state == State.Resting) {
                 //stress -= restingStressLoss * Time.deltaTime;
-                GetComponent<AddsToAudioBubble>().makingRecRoomSound = true;
+                //GetComponent<AddsToAudioBubble>().makingRecRoomSound = true;
             } else {
                 stress += ambientStressGain * Time.deltaTime;
-                GetComponent<AddsToAudioBubble>().makingRecRoomSound = false;
+                //GetComponent<AddsToAudioBubble>().makingRecRoomSound = false;
             }
         }
 
@@ -116,6 +116,10 @@ public class Unit : MonoBehaviour {
             stress = Mathf.Max(stress - destressAmount, 0.0f);
             return true;
         }
+        else
+        {
+            GetComponent<AddsToAudioBubble>().makingRecRoomSound = false;
+        }
         return false;
     }
 
@@ -139,6 +143,7 @@ public class Unit : MonoBehaviour {
 
             if (tile.tileType != TileType.Normal) {
                 state = State.Operating;
+
             } else {
                 state = State.Idling;
             }

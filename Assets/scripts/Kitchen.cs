@@ -51,28 +51,34 @@ public class Kitchen : MonoBehaviour {
 
     void OnEnterEffect(Unit unit, TileType type)
     {
-        if (lostPower == false)
+        if (type == TileType.Kitchen)
         {
-            unitsFoodSack = unit.GetComponent<FoodSack>();
-            ResetFoodRegenCountdown();
-            if (cookingStatChangesFoodRegenRate)
+            if (lostPower == false)
             {
-                currentFoodRegenSpeed = unit.unitStats.Cooking;
-            }
-            else
-            {
-                currentFoodRegenSpeed = 1;
+                unitsFoodSack = unit.GetComponent<FoodSack>();
+                ResetFoodRegenCountdown();
+                if (cookingStatChangesFoodRegenRate)
+                {
+                    currentFoodRegenSpeed = unit.unitStats.Cooking;
+                }
+                else
+                {
+                    currentFoodRegenSpeed = 1;
+                }
             }
         }
     }
 
     void OnExitEffect(Unit unit, TileType type)
     {
-        if (lostPower == false)
+        if (type == TileType.Kitchen)
         {
-            unitsFoodSack = null;
-            ResetCookingSpeed();
-            ResetFoodRegenCountdown();
+            if (lostPower == false)
+            {
+                unitsFoodSack = null;
+                ResetCookingSpeed();
+                ResetFoodRegenCountdown();
+            }
         }
     }
 }

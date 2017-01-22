@@ -16,7 +16,7 @@ public class VoiceController : MonoBehaviour {
     {
         if (randomCharacter == true)
         {
-            characterNumber = Random.Range(1, 4);
+            characterNumber = Random.Range(2, 4);
         }
 	}
 	

@@ -26,6 +26,11 @@ public class RecRoom : MonoBehaviour {
 
     void Update()
     {
+        if (currentFood <= 0)
+        {
+            eatingUnit.GetComponent<AddsToAudioBubble>().makingRecRoomSound = false;
+        }
+
         if (eatingUnit != null && currentFood > 0)
         {
             foodEatCountdown -= Time.deltaTime;
@@ -47,27 +52,35 @@ public class RecRoom : MonoBehaviour {
         if (eatingUnit.EatFood(foodDestressAmount))
         {
             currentFood -= 1;
-
+            eatingUnit.GetComponent<AddsToAudioBubble>().makingRecRoomSound = true;
         }
     }
 
     void OnEnterEffect(Unit unit, TileType type)
     {
-        FoodSack foodSack = unit.GetComponent<FoodSack>();
-        if (foodSack.HasFood())
+        if (type == TileType.Rec)
         {
-            currentFood += foodSack.RemoveFromSack();
-            currentFood = currentFood > maxFood ? maxFood : currentFood;
-        }
+                
+            
+            FoodSack foodSack = unit.GetComponent<FoodSack>();
+            if (foodSack.HasFood())
+            {
+                currentFood += foodSack.RemoveFromSack();
+                currentFood = currentFood > maxFood ? maxFood : currentFood;
+            }
 
-        eatingUnit = unit;
-        ResetFoodEatCountdown();
+            eatingUnit = unit;
+            ResetFoodEatCountdown();
+        }
     }
 
     void OnExitEffect(Unit unit, TileType type)
     {
-
-        eatingUnit = null;
-        ResetFoodEatCountdown();
+        if (type == TileType.Rec)
+        {
+            eatingUnit.GetComponent<AddsToAudioBubble>().makingRecRoomSound = false;
+            eatingUnit = null;
+            ResetFoodEatCountdown();
+        }
     }
 }
