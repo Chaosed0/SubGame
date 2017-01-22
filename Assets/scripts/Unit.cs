@@ -132,7 +132,7 @@ public class Unit : MonoBehaviour {
         }
 
         Breach repairCandidate = pathfinder.level.getAdjacentUntraversableTile(this.transform.position);
-        if (repairCandidate != null) {
+        if (repairCandidate != null && repairCandidate.GetComponent<Breach>().permanent == false) {
             breachBeingRepaired = repairCandidate;
             breachBeingRepaired.onBreachFixed.AddListener(OnBreachFixed);
             state = State.Repairing;

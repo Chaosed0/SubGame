@@ -48,10 +48,14 @@ public class Breach : MonoBehaviour {
         }
         else
         {
-            GetComponent<SpriteRenderer>().sprite = floodSprites[3];
+            if (permanent == false)
+            {
+                GetComponent<SpriteRenderer>().sprite = floodSprites[3];
+                onBreachCompletelyFloodsRoom.Invoke();
 
-            //room permanently disabled
-            permanent = true;
+                //room permanently disabled
+                permanent = true;
+            }
 
 
         }
