@@ -47,6 +47,11 @@ public class PlayerInput : MonoBehaviour {
     }
 
     public void SelectPathfinder(Pathfinder pathfinder) {
+        if (selectedPathfinder != null) {
+            selectedPathfinder.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255);
+        }
+
         this.selectedPathfinder = pathfinder;
+        pathfinder.GetComponent<SpriteRenderer>().color = new Color(0, 255, 0);
     }
 }

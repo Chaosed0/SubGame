@@ -10,9 +10,10 @@ public class Unit : MonoBehaviour {
     private State state = State.Idling;
     private Breach breachBeingRepaired = null;
 
+    private float stressGainMultiplier = 1.0f;
+
     public UnitStats unitStats;
     public float ambientStressGain = 0.1f;
-    public float restingStressLoss = 0.5f;
     public float panickingStressLoss = 10.0f;
     public float panicThreshold = 100.0f;
     public float panicOffThreshold = 50.0f;
@@ -42,6 +43,7 @@ public class Unit : MonoBehaviour {
     void Update() {
         if (state != State.Panicked && stress >= panicThreshold) {
             // Panic!
+            // Uhhh, I can't explain why this panics really.
             pathfinder.onPathFinished.Invoke();
         } else if (state == State.Panicked) {
             stress -= panickingStressLoss * Time.deltaTime;
@@ -58,10 +60,9 @@ public class Unit : MonoBehaviour {
             }
         } else {
             if (state == State.Resting) {
-                //stress -= restingStressLoss * Time.deltaTime;
                 //GetComponent<AddsToAudioBubble>().makingRecRoomSound = true;
             } else {
-                stress += ambientStressGain * Time.deltaTime;
+                stress += ambientStressGain * stressGainMultiplier * Time.deltaTime;
                 //GetComponent<AddsToAudioBubble>().makingRecRoomSound = false;
             }
         }
@@ -96,6 +97,10 @@ public class Unit : MonoBehaviour {
 
     public float GetStressLevel() {
         return stress / panicThreshold;
+    }
+
+    public void SetStressMultiplier(float multiplier) {
+        stressGainMultiplier = multiplier;
     }
 
     private void OnBreachFixed() {

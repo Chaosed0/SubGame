@@ -107,8 +107,7 @@ public class Level : MonoBehaviour {
     }
 
     public bool IsTraversable(Vector2 worldPoint) {
-        Vector2 tilePos = WorldToTilePosition(worldPoint);
-        Tile tile = levelTiles[(int)tilePos.y, (int)tilePos.x];
+        Tile tile = TileAtWorldPosition(worldPoint);
         if (tile == null) {
             return false;
         }
