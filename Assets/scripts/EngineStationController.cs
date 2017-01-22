@@ -88,7 +88,7 @@ public class EngineStationController : MonoBehaviour {
         steering.lostPower = true;
 
         foreach (Unit unit in units) {
-            unit.SetStressMultiplier(5.0f);
+            unit.SetStressMultiplier(50.0f);
         }
     }
 
