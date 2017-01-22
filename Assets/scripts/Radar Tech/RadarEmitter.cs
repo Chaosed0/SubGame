@@ -28,7 +28,7 @@ public class RadarEmitter : MonoBehaviour {
 	public void CreatePulse()
 	{
 
-		GameObject a = Instantiate (RadarPulsePrefab, transform.position, transform.rotation);
+        GameObject a = Instantiate (RadarPulsePrefab, new Vector3(transform.position.x, transform.position.y, transform.position.z), transform.rotation);
         a.transform.parent = transform.root;
         radarSound.Play();
 
