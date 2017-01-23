@@ -10,7 +10,7 @@ public class CharacterSelectManager : MonoBehaviour
     public Button startButton;
     public Image[] slotImageComponents;
     public Sprite[] slotProfileSprites;
-    private int[] selectedCharacterIDs = new int[4];
+    private int[] selectedCharacterIDs = new int[3];
     
     private int maxCharacterID = 5;
 	

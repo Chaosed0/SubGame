@@ -30,7 +30,7 @@ public class WinCheck : MonoBehaviour
 
     private void CheckDepth()
     {
-        if (ship.depth <= ship.maxDepth)
+        if (ship.depth >= ship.maxDepth)
         {
             TriggerWin();
         }
@@ -53,7 +53,8 @@ public class WinCheck : MonoBehaviour
             if (fadeAmount >= 1)
             {
                 StopAllCoroutines();
-                SceneManager.LoadScene("WinScene");
+                //SceneManager. .LoadScene("WinScene");
+                UnityEngine.SceneManagement.SceneManager.LoadScene("WinScene");
                 yield break;
             }
             yield return null;

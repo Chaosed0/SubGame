@@ -8,24 +8,14 @@ public class UnitStats : MonoBehaviour {
     //
 
 
-    //quartermaster - navigation
-    //sonar specialist 1 and 2 - sonar
-    //engineer/mechanic - fixing - needs to eat more?
-    //gunner - weapons - sanity decreases faster?
-    //chaplin - sanity
-    //cook - sanity
+
 
     [Header("Stat Multipliers")]
-    [SerializeField]
-    private float steering = 1.0f;
-    [SerializeField]
-    private float sonar = 1.0f;
-    [SerializeField]
-    private float repair = 1.0f;
-    [SerializeField]
-    private float sanity = 1.0f;
-    [SerializeField]
-    private float cooking = 1.0f;
+    public float Steering = 1.0f;
+    public float Sonar = 1.0f;
+    public float Repair = 1.0f;
+    public float Sanity = 1.0f;
+    public float Cooking = 1.0f;
 
 
     public Sprite goodPortrait;
@@ -33,9 +23,8 @@ public class UnitStats : MonoBehaviour {
     public Sprite badPortrait;
     public Sprite panicPortrait;
 
-    public float Steering { get { return steering; } }
-    public float Sonar { get { return sonar; } }
-    public float Repair { get { return repair; } }
-    public float Sanity { get { return sanity; } }
-    public float Cooking { get { return cooking; } }
+    void Start()
+    {
+        
+    }
 }

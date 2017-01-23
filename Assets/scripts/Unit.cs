@@ -25,6 +25,8 @@ public class Unit : MonoBehaviour {
     public UnityEvent onPanicked = new UnityEvent();
     public UnityEvent onUnpanicked = new UnityEvent();
 
+    public Sprite[] portraits;
+
     public enum State {
         Idling,
         Moving,
@@ -42,6 +44,40 @@ public class Unit : MonoBehaviour {
 	    unitStats = GetComponent<UnitStats>();
 
         stress = Random.Range(stressMinOnStart, stressMaxOnStart);
+
+        int charId = GameStartData.playingCharacterIDs[pathfinder.unitId];
+        switch (charId)
+        {
+            case 0:
+                unitStats.Steering = 2.0f;
+                unitStats.Sonar = 0.5f;
+                unitStats.goodPortrait = unitStats.badPortrait = unitStats.mediumPortrait = unitStats.panicPortrait = portraits[2];
+                break;
+            case 1:
+                unitStats.Sonar = 2.0f;
+                unitStats.Repair = 0.5f;
+                unitStats.goodPortrait = unitStats.badPortrait = unitStats.mediumPortrait = unitStats.panicPortrait = portraits[1];
+                break;
+            case 2:
+                unitStats.Sonar = 2.0f;
+                unitStats.Cooking = 0.5f;
+                unitStats.goodPortrait = unitStats.badPortrait = unitStats.mediumPortrait = unitStats.panicPortrait = portraits[4];
+                break;
+            case 3:
+                unitStats.Repair = 2.0f;
+                unitStats.Steering = 0.5f;
+                unitStats.goodPortrait = unitStats.badPortrait = unitStats.mediumPortrait = unitStats.panicPortrait = portraits[3];
+                break;
+            case 4:
+                pathfinder.moveSpeed *= 2.0f;
+                unitStats.goodPortrait = unitStats.badPortrait = unitStats.mediumPortrait = unitStats.panicPortrait = portraits[0];
+                break;
+            case 5:
+                unitStats.Cooking = 2.0f;
+                unitStats.Repair = 0.5f;
+                unitStats.goodPortrait = unitStats.badPortrait = unitStats.mediumPortrait = unitStats.panicPortrait = portraits[5];
+                break;
+        }
 	}
 
     void Update() {
