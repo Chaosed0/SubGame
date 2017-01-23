@@ -50,5 +50,20 @@ public class RadarPulse : MonoBehaviour {
 		{
 			monsterScript.DropDetectedImage (currentLifeTime);
 		}
+		else
+		{
+			Debug.Log ("222sdfsd");
+
+			DropAfterImageOnly dropImageOnlyScript;
+			if(dropImageOnlyScript = collider.GetComponent<DropAfterImageOnly>())
+			{
+				Debug.Log ("sdfsd");
+
+	
+
+				dropImageOnlyScript.DropDetectedImage ();
+			}
+		}
+
 	}
 }
