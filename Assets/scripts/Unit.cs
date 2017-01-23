@@ -52,30 +52,36 @@ public class Unit : MonoBehaviour {
                 unitStats.Steering = 2.0f;
                 unitStats.Sonar = 0.5f;
                 unitStats.goodPortrait = unitStats.badPortrait = unitStats.mediumPortrait = unitStats.panicPortrait = portraits[2];
+                this.name = "Nerwyn";
                 break;
             case 1:
                 unitStats.Sonar = 2.0f;
                 unitStats.Repair = 0.5f;
                 unitStats.goodPortrait = unitStats.badPortrait = unitStats.mediumPortrait = unitStats.panicPortrait = portraits[1];
+                this.name = "Idabel";
                 break;
             case 2:
                 unitStats.Sonar = 2.0f;
                 unitStats.Cooking = 0.5f;
                 unitStats.goodPortrait = unitStats.badPortrait = unitStats.mediumPortrait = unitStats.panicPortrait = portraits[4];
+                this.name = "Shinkai";
                 break;
             case 3:
                 unitStats.Repair = 2.0f;
                 unitStats.Steering = 0.5f;
                 unitStats.goodPortrait = unitStats.badPortrait = unitStats.mediumPortrait = unitStats.panicPortrait = portraits[3];
+                this.name = "Kalitka";
                 break;
             case 4:
                 pathfinder.moveSpeed *= 2.0f;
                 unitStats.goodPortrait = unitStats.badPortrait = unitStats.mediumPortrait = unitStats.panicPortrait = portraits[0];
+                this.name = "Trieste";
                 break;
             case 5:
                 unitStats.Cooking = 2.0f;
                 unitStats.Repair = 0.5f;
                 unitStats.goodPortrait = unitStats.badPortrait = unitStats.mediumPortrait = unitStats.panicPortrait = portraits[5];
+                this.name = "Mariana";
                 break;
         }
 	}
