@@ -55,13 +55,13 @@ public class Unit : MonoBehaviour {
                 this.name = "Nerwyn";
                 break;
             case 1:
-                unitStats.Sonar = 2.0f;
+                unitStats.Sonar = 2f;
                 unitStats.Repair = 0.5f;
                 unitStats.goodPortrait = unitStats.badPortrait = unitStats.mediumPortrait = unitStats.panicPortrait = portraits[1];
                 this.name = "Idabel";
                 break;
             case 2:
-                unitStats.Sonar = 2.0f;
+                unitStats.Sonar = 2f;
                 unitStats.Cooking = 0.5f;
                 unitStats.goodPortrait = unitStats.badPortrait = unitStats.mediumPortrait = unitStats.panicPortrait = portraits[4];
                 this.name = "Shinkai";

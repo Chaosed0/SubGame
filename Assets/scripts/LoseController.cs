@@ -45,10 +45,11 @@ public class LoseController : MonoBehaviour {
 
             Vector2 position = monster.transform.position;
             position.x = initialX + (finalX - initialX) * timer / totalTime;
+            position.y = this.transform.position.y;
             monster.transform.position = position;
 
             if (timer >= totalTime) {
-                SceneManager.LoadScene("MainMenu");
+                UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
             }
         }
     }
