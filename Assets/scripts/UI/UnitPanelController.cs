@@ -50,16 +50,8 @@ public class UnitPanelController : MonoBehaviour {
             sanitySlider.value = 1.0f - selectedUnit.GetStressLevel();
         }
 
-        if (selectedUnit.IsPanicked()) {
-            portrait.sprite = selectedUnit.unitStats.panicPortrait;
-        } else if (selectedUnit.GetStressLevel() <= 0.3f) {
-            portrait.sprite = selectedUnit.unitStats.goodPortrait;
-        } else if (selectedUnit.GetStressLevel() <= 0.6f) {
-            portrait.sprite = selectedUnit.unitStats.mediumPortrait;
-        } else if (selectedUnit.GetStressLevel() <= 1.0f) {
-            portrait.sprite = selectedUnit.unitStats.badPortrait;
-        }
-	}
+        portrait.sprite = selectedUnit.unitStats.portrait;
+    }
 
     void engineToggleChanged(bool newValue) {
         engineController.SetEngineOn(newValue);

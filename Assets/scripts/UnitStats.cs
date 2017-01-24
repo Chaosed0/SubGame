@@ -17,11 +17,7 @@ public class UnitStats : MonoBehaviour {
     public float Sanity = 1.0f;
     public float Cooking = 1.0f;
 
-
-    public Sprite goodPortrait;
-    public Sprite mediumPortrait;
-    public Sprite badPortrait;
-    public Sprite panicPortrait;
+    public Sprite portrait;
 
     void Start()
     {

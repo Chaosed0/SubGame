@@ -1,18 +1,23 @@
 fileFormatVersion: 2
-guid: c44a6a79bd5856745af4155cfcdaf939
-timeCreated: 1485233417
+guid: e799fd17fe9d2374bbd4994b281685bb
+timeCreated: 1485233527
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: sheet - idle v2_0
-    21300002: sheet - idle v2_1
-    21300004: sheet - idle v2_2
-    21300006: sheet - idle v2_3
-    21300008: sheet - idle v2_4
-    21300010: sheet - idle v2_5
-    21300012: sheet - idle v2_6
-    21300014: sheet - idle v2_7
-    21300016: sheet - idle v2_8
+    21300000: sheet - cry_0
+    21300002: sheet - cry_1
+    21300004: sheet - cry_2
+    21300006: sheet - cry_3
+    21300008: sheet - cry_4
+    21300010: sheet - cry_5
+    21300012: sheet - cry_6
+    21300014: sheet - cry_7
+    21300016: sheet - cry_8
+    21300018: sheet - cry_9
+    21300020: sheet - cry_10
+    21300022: sheet - cry_11
+    21300024: sheet - cry_12
+    21300026: sheet - cry_13
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -75,35 +80,89 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
-  - buildTarget: iPhone
-    maxTextureSize: 2048
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-  - buildTarget: Android
-    maxTextureSize: 2048
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-  - buildTarget: WebGL
-    maxTextureSize: 2048
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: sheet - idle v2_0
+      name: sheet - cry_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 80
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: sheet - cry_1
+      rect:
+        serializedVersion: 2
+        x: 20
+        y: 80
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: sheet - cry_2
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 80
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: sheet - cry_3
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 60
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: sheet - cry_4
+      rect:
+        serializedVersion: 2
+        x: 20
+        y: 60
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: sheet - cry_5
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 60
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: sheet - cry_6
       rect:
         serializedVersion: 2
         x: 0
@@ -111,12 +170,12 @@ TextureImporter:
         width: 20
         height: 20
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: sheet - idle v2_1
+      name: sheet - cry_7
       rect:
         serializedVersion: 2
         x: 20
@@ -124,12 +183,12 @@ TextureImporter:
         width: 20
         height: 20
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: sheet - idle v2_2
+      name: sheet - cry_8
       rect:
         serializedVersion: 2
         x: 40
@@ -137,12 +196,12 @@ TextureImporter:
         width: 20
         height: 20
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: sheet - idle v2_3
+      name: sheet - cry_9
       rect:
         serializedVersion: 2
         x: 0
@@ -150,12 +209,12 @@ TextureImporter:
         width: 20
         height: 20
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: sheet - idle v2_4
+      name: sheet - cry_10
       rect:
         serializedVersion: 2
         x: 20
@@ -163,12 +222,12 @@ TextureImporter:
         width: 20
         height: 20
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: sheet - idle v2_5
+      name: sheet - cry_11
       rect:
         serializedVersion: 2
         x: 40
@@ -176,12 +235,12 @@ TextureImporter:
         width: 20
         height: 20
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: sheet - idle v2_6
+      name: sheet - cry_12
       rect:
         serializedVersion: 2
         x: 0
@@ -189,12 +248,12 @@ TextureImporter:
         width: 20
         height: 20
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: sheet - idle v2_7
+      name: sheet - cry_13
       rect:
         serializedVersion: 2
         x: 20
@@ -202,7 +261,7 @@ TextureImporter:
         width: 20
         height: 20
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0

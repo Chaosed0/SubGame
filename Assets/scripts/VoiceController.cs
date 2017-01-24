@@ -5,19 +5,12 @@ using UnityEngine;
 public class VoiceController : MonoBehaviour {
 
     public bool randomCharacter;
-    public int characterNumber;
 
-    public GameObject[] char01ShortVoiceClips;
-    public GameObject[] char02ShortVoiceClips;
-    public GameObject[] char03ShortVoiceClips;
+    public GameObject[] voiceClips;
 
 	// Use this for initialization
 	void Start () 
     {
-        if (randomCharacter == true)
-        {
-            characterNumber = Random.Range(2, 4);
-        }
 	}
 	
 	// Update is called once per frame
@@ -28,17 +21,7 @@ public class VoiceController : MonoBehaviour {
 
     public void PlayShortVoiceClip()
     {
-        if (characterNumber == 1)
-        {
-            Instantiate(char01ShortVoiceClips[Random.Range(0, char01ShortVoiceClips.Length)], transform.position, Quaternion.identity);
-        }
-        else if (characterNumber == 2)
-        {
-            Instantiate(char02ShortVoiceClips[Random.Range(0, char02ShortVoiceClips.Length)], transform.position, Quaternion.identity);
-        }
-        else if (characterNumber == 3)
-        {
-            Instantiate(char03ShortVoiceClips[Random.Range(0, char03ShortVoiceClips.Length)], transform.position, Quaternion.identity);
-        }
+        int index = Random.Range(0, voiceClips.Length);
+        Instantiate(voiceClips[index], transform.position, Quaternion.identity);
     }
 }

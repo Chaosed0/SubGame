@@ -1,18 +1,18 @@
 fileFormatVersion: 2
-guid: c44a6a79bd5856745af4155cfcdaf939
-timeCreated: 1485233417
+guid: b76c5bcd634e3e1408a1e5fe2667af8b
+timeCreated: 1485233396
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: sheet - idle v2_0
-    21300002: sheet - idle v2_1
-    21300004: sheet - idle v2_2
-    21300006: sheet - idle v2_3
-    21300008: sheet - idle v2_4
-    21300010: sheet - idle v2_5
-    21300012: sheet - idle v2_6
-    21300014: sheet - idle v2_7
-    21300016: sheet - idle v2_8
+    21300000: sheet - idle_0
+    21300002: sheet - idle_1
+    21300004: sheet - idle_2
+    21300006: sheet - idle_3
+    21300008: sheet - idle_4
+    21300010: sheet - idle_5
+    21300012: sheet - idle_6
+    21300014: sheet - idle_7
+    21300016: sheet - idle_8
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -75,35 +75,11 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
-  - buildTarget: iPhone
-    maxTextureSize: 2048
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-  - buildTarget: Android
-    maxTextureSize: 2048
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-  - buildTarget: WebGL
-    maxTextureSize: 2048
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: sheet - idle v2_0
+      name: sheet - idle_0
       rect:
         serializedVersion: 2
         x: 0
@@ -116,7 +92,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: sheet - idle v2_1
+      name: sheet - idle_1
       rect:
         serializedVersion: 2
         x: 20
@@ -129,7 +105,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: sheet - idle v2_2
+      name: sheet - idle_2
       rect:
         serializedVersion: 2
         x: 40
@@ -142,7 +118,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: sheet - idle v2_3
+      name: sheet - idle_3
       rect:
         serializedVersion: 2
         x: 0
@@ -155,7 +131,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: sheet - idle v2_4
+      name: sheet - idle_4
       rect:
         serializedVersion: 2
         x: 20
@@ -168,7 +144,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: sheet - idle v2_5
+      name: sheet - idle_5
       rect:
         serializedVersion: 2
         x: 40
@@ -181,7 +157,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: sheet - idle v2_6
+      name: sheet - idle_6
       rect:
         serializedVersion: 2
         x: 0
@@ -194,7 +170,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: sheet - idle v2_7
+      name: sheet - idle_7
       rect:
         serializedVersion: 2
         x: 20
