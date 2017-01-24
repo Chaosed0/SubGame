@@ -15,6 +15,7 @@ public class Pathfinder : MonoBehaviour {
 
     public float moveSpeed = 2.0f;
     public float slowMoveSpeed = 1.0f;
+    public Vector2 moveOffset = new Vector2(0.0f, 0.07f);
     public int unitId = 0;
     public PlayerInput playerInput;
     public Level level;
@@ -93,7 +94,8 @@ public class Pathfinder : MonoBehaviour {
         }
 
         Vector2 position = new Vector2(this.transform.localPosition.x, this.transform.localPosition.y);
-        Vector2 direction = path[pathIndex] - position;
+        Vector2 target = path[pathIndex] + moveOffset;
+        Vector2 direction = target - position;
         movement = direction.normalized * (isSlowed ? slowMoveSpeed : moveSpeed) * Time.deltaTime;
 
         this.transform.localPosition = new Vector3(this.transform.localPosition.x + movement.x, this.transform.localPosition.y + movement.y, this.transform.localPosition.z);
@@ -108,8 +110,8 @@ public class Pathfinder : MonoBehaviour {
         }
 
         Vector2 newPosition = new Vector2(this.transform.localPosition.x, this.transform.localPosition.y);
-        if ((path[pathIndex] - newPosition).magnitude < 0.05f) {
-            this.transform.localPosition = path[pathIndex];
+        if ((target - newPosition).magnitude < 0.05f) {
+            this.transform.localPosition = target;
 
             pathIndex++;
 
