@@ -11,6 +11,7 @@ public class Pathfinder : MonoBehaviour {
     private Vector2[] path;
     private Vector2 destination;
     private Unit unit;
+    private Vector2 movement;
 
     public float moveSpeed = 2.0f;
     public float slowMoveSpeed = 1.0f;
@@ -50,8 +51,8 @@ public class Pathfinder : MonoBehaviour {
         this.pathIndex = 0;
         this.isPathing = true;
 
-        level.UpdateOccupancy(destination, this.unitId);
-        path = level.FindPath(this.transform.position, destination);
+        level.UpdateOccupancy(level.WorldToTilePosition(destination), this.unitId);
+        path = level.FindPath(level.WorldToTilePosition(this.transform.position), level.WorldToTilePosition(destination));
 
         if (onPathStarted != null) {
             onPathStarted.Invoke();
@@ -61,16 +62,16 @@ public class Pathfinder : MonoBehaviour {
     private void OnPanicked() {
         // Immediately stop moving
         this.isPathing = false;
-        level.UpdateOccupancy(this.transform.position, this.unitId);
+        level.UpdateOccupancy(level.WorldToTilePosition(this.transform.position), this.unitId);
     }
 
     private void OnRepathNeeded() {
         if (this.isPathing) {
             // See if our path has been obstructed
             for (int i = pathIndex; i < path.Length; i++) {
-                if (!level.IsTraversable(path[i])) {
+                if (!level.IsTraversable(level.LocalToTilePosition(path[i]))) {
                     System.Array.Resize(ref path, i);
-                    level.UpdateOccupancy(path[i-1], this.unitId);
+                    level.UpdateOccupancy(level.LocalToTilePosition(path[i-1]), this.unitId);
                 }
             }
         } else {
@@ -93,7 +94,7 @@ public class Pathfinder : MonoBehaviour {
 
         Vector2 position = new Vector2(this.transform.localPosition.x, this.transform.localPosition.y);
         Vector2 direction = path[pathIndex] - position;
-        Vector2 movement = direction.normalized * (isSlowed ? slowMoveSpeed : moveSpeed) * Time.deltaTime;
+        movement = direction.normalized * (isSlowed ? slowMoveSpeed : moveSpeed) * Time.deltaTime;
 
         this.transform.localPosition = new Vector3(this.transform.localPosition.x + movement.x, this.transform.localPosition.y + movement.y, this.transform.localPosition.z);
 
@@ -105,20 +106,6 @@ public class Pathfinder : MonoBehaviour {
         {
             transform.localScale = new Vector3(-5, transform.localScale.y, transform.localScale.z);
         }
-            
-
-        if (movement.y != 0)
-        {
-            GetComponent<AnimateObject>().playingWalk = false;
-            GetComponent<AnimateObject>().playingClimb = true;
-        }
-        else if (movement.x != 0)
-        {
-            GetComponent<AnimateObject>().playingWalk = true;
-            GetComponent<AnimateObject>().playingClimb = false;
-        }
-
-        
 
         Vector2 newPosition = new Vector2(this.transform.localPosition.x, this.transform.localPosition.y);
         if ((path[pathIndex] - newPosition).magnitude < 0.05f) {
@@ -134,6 +121,13 @@ public class Pathfinder : MonoBehaviour {
                 }
             }
         }
+    }
+
+    public Vector2 GetMovement() {
+        if (isPathing) {
+            return movement;
+        }
+        return new Vector2(0.0f, 0.0f);
     }
 
     void OnMouseDown() {

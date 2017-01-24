@@ -65,7 +65,7 @@ public class Breach : MonoBehaviour {
         workLeft -= Time.deltaTime * repairMulitplier;
 
         if (workLeft <= 0.0f) {
-            level.SetTraversable(tile.transform.position, true);
+            level.SetTraversable(level.WorldToTilePosition(tile.transform.position), true);
             if (onBreachFixed != null) {
                 
                 onBreachFixed.Invoke();

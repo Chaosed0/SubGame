@@ -90,8 +90,10 @@ public class RecRoom : MonoBehaviour {
 
         if (type == TileType.Rec)
         {
-            eatingUnit.GetComponent<AddsToAudioBubble>().makingRecRoomSound = false;
-            eatingUnit = null;
+            if (eatingUnit != null) {
+                eatingUnit.GetComponent<AddsToAudioBubble>().makingRecRoomSound = false;
+                eatingUnit = null;
+            }
             ResetFoodEatCountdown();
         }
          

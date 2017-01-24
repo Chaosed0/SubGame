@@ -5,6 +5,6 @@ using System.Text;
 
 public static class GameStartData
 {
-    public static int[] playingCharacterIDs = new int[4];
+    public static int[] playingCharacterIDs = {0,1,2,3 };
 }
 

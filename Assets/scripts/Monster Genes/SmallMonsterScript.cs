@@ -167,7 +167,8 @@ public class SmallMonsterScript : MonoBehaviour {
 		particlePosition.z = transform.position.z;
 		Instantiate (hitParticleSystemPrefab, particlePosition, transform.rotation);
 
-		Level.levelReference.SetTraversable (target.position, false);
+        Vector2 tilePosition = Level.levelReference.WorldToTilePosition(target.position);
+		Level.levelReference.SetTraversable (tilePosition, false);
 		//Make sound
 
 		//Play breah hull sound

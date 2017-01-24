@@ -9,6 +9,8 @@ public class Unit : MonoBehaviour {
     public float stressMinOnStart;
     public float stressMaxOnStart;
     private Pathfinder pathfinder;
+    private AnimateObject animateObject;
+    private AddsToAudioBubble audioBubble;
     private State state = State.Idling;
     private Breach breachBeingRepaired = null;
 
@@ -42,6 +44,8 @@ public class Unit : MonoBehaviour {
         pathfinder.onPathFinished.AddListener(OnPathFinished);
 
 	    unitStats = GetComponent<UnitStats>();
+        animateObject = GetComponent<AnimateObject>();
+        audioBubble = GetComponent<AddsToAudioBubble>();
 
         stress = Random.Range(stressMinOnStart, stressMaxOnStart);
 
@@ -96,7 +100,7 @@ public class Unit : MonoBehaviour {
             if (stress <= panicOffThreshold) {
                 // unpanic...
                 state = State.Idling;
-                GetComponent<AddsToAudioBubble>().makingPanicSound = false;
+                audioBubble.makingPanicSound = false;
                 if (pathfinder.onPathFinished != null) {
                     pathfinder.onPathFinished.Invoke();
                 }
@@ -106,30 +110,45 @@ public class Unit : MonoBehaviour {
             }
         } else {
             if (state == State.Resting) {
-                //GetComponent<AddsToAudioBubble>().makingRecRoomSound = true;
+                //audioBubble.makingRecRoomSound = true;
             } else {
                 stress += ambientStressGain * stressGainMultiplier * Time.deltaTime;
-                //GetComponent<AddsToAudioBubble>().makingRecRoomSound = false;
+                //audioBubble.makingRecRoomSound = false;
             }
         }
 
         if (state == State.Repairing)
         {
             breachBeingRepaired.doWorkOnBreach(unitStats.Repair);
-            GetComponent<AddsToAudioBubble>().makingRepairSound = true;
-            GetComponent<AnimateObject>().playingRepair = true;
-            GetComponent<AnimateObject>().playingIdle = false;
+            audioBubble.makingRepairSound = true;
+            animateObject.playingRepair = true;
+            animateObject.playingIdle = false;
         }
         else if (state == State.Idling || state == State.Operating)
         {
-            GetComponent<AddsToAudioBubble>().makingRepairSound = false;
-            GetComponent<AnimateObject>().playingRepair = false;
-            GetComponent<AnimateObject>().playingIdle = true;
+            audioBubble.makingRepairSound = false;
+            animateObject.playingRepair = false;
+            animateObject.playingIdle = true;
         }
         else if(state == State.Panicked)
         {
-            GetComponent<AnimateObject>().playingPanic = true;
-            GetComponent<AnimateObject>().playingIdle = false;
+            animateObject.playingPanic = true;
+            animateObject.playingIdle = false;
+        }
+        else if (state == State.Moving)
+        {
+            Vector2 movement = pathfinder.GetMovement();
+            animateObject.playingIdle = false;
+            if (Mathf.Abs(movement.y) > Mathf.Abs(movement.x))
+            {
+                animateObject.playingWalk = false;
+                animateObject.playingClimb = true;
+            }
+            else
+            {
+                animateObject.playingWalk = true;
+                animateObject.playingClimb = false;
+            }
         }
     }
 
@@ -169,7 +188,7 @@ public class Unit : MonoBehaviour {
         }
         else
         {
-            GetComponent<AddsToAudioBubble>().makingRecRoomSound = false;
+            audioBubble.makingRecRoomSound = false;
         }
         return false;
     }
@@ -177,14 +196,14 @@ public class Unit : MonoBehaviour {
     private void OnPathFinished() {
         if (stress >= panicThreshold) {
             state = State.Panicked;
-            GetComponent<AddsToAudioBubble>().makingPanicSound = true;
+            audioBubble.makingPanicSound = true;
             if (onPanicked != null) {
                 onPanicked.Invoke();
             }
             return;
         }
 
-        Breach repairCandidate = pathfinder.level.getAdjacentUntraversableTile(this.transform.position);
+        Breach repairCandidate = pathfinder.level.getAdjacentUntraversableTile(pathfinder.level.WorldToTilePosition(this.transform.position));
         if (repairCandidate != null && repairCandidate.GetComponent<Breach>().permanent == false) {
             breachBeingRepaired = repairCandidate;
             breachBeingRepaired.onBreachFixed.AddListener(OnBreachFixed);

@@ -22,7 +22,8 @@ public class PlayerInput : MonoBehaviour {
 
         if (testselect) {
             Vector3 worldPoint = camera.ScreenToWorldPoint(mousePosition);
-            level.SetTraversable(worldPoint, !level.IsTraversable(worldPoint));
+            Vector2 tilePosition = level.WorldToTilePosition(worldPoint);
+            level.SetTraversable(tilePosition, !level.IsTraversable(tilePosition));
         }
     }
 

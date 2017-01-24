@@ -95,7 +95,7 @@ public class Level : MonoBehaviour {
         // Register all pathfinders with the level
         Pathfinder[] pathfinders = GameObject.FindObjectsOfType<Pathfinder>();
         for (int i = 0; i < pathfinders.Length; i++) {
-            this.UpdateOccupancy(pathfinders[i].transform.position, pathfinders[i].unitId);
+            this.UpdateOccupancy(this.WorldToTilePosition(pathfinders[i].transform.position), pathfinders[i].unitId);
         }
 	}
 
@@ -106,17 +106,16 @@ public class Level : MonoBehaviour {
             0.0f);
     }
 
-    public bool IsTraversable(Vector2 worldPoint) {
-        Tile tile = TileAtWorldPosition(worldPoint);
+    public bool IsTraversable(Vector2 tilePosition) {
+        Tile tile = TileAtTileCoords(tilePosition);
         if (tile == null) {
             return false;
         }
         return tile.traversable;
     }
 
-    public void SetTraversable(Vector2 worldPoint, bool traversable) {
-        Vector2 tilePos = WorldToTilePosition(worldPoint);
-        Tile tile = levelTiles[(int)tilePos.y, (int)tilePos.x];
+    public void SetTraversable(Vector2 tilePosition, bool traversable) {
+        Tile tile = TileAtTileCoords(tilePosition);
         if (tile == null) {
             return;
         }
@@ -124,10 +123,10 @@ public class Level : MonoBehaviour {
         if (tile.traversable != traversable) {
             tile.traversable = traversable;
 
-            int tileId = TilePositionToTileId(tilePos);
+            int tileId = TilePositionToTileId(tilePosition);
             if (!traversable) {
                 if (!breaches.ContainsKey(tileId)) {
-                    Vector3 position = positionForTileGameObject((int)tilePos.x, (int)tilePos.y);
+                    Vector3 position = positionForTileGameObject((int)tilePosition.x, (int)tilePosition.y);
                     Breach breach = Instantiate<Breach>(breachPrefab, new Vector3(position.x, position.y, -3), Quaternion.identity, this.transform);
                     breach.level = this;
                     breach.tile = tile;
@@ -151,9 +150,7 @@ public class Level : MonoBehaviour {
         }
     }
 
-    public Breach getAdjacentUntraversableTile(Vector2 worldPoint) {
-        Vector2 tilePosition = WorldToTilePosition(worldPoint);
-
+    public Breach getAdjacentUntraversableTile(Vector2 tilePosition) {
         Vector2 rightTilePosition = new Vector2(tilePosition.x+1, tilePosition.y);
         Vector2 leftTilePosition = new Vector2(tilePosition.x-1, tilePosition.y);
         Vector2 downTilePosition = new Vector2(tilePosition.x, tilePosition.y+1);
@@ -191,8 +188,8 @@ public class Level : MonoBehaviour {
 
     // Call this when the player selects a tile to move the unit to, to mark that no other
     // unit should move to that square.
-    public void UpdateOccupancy(Vector2 worldPoint, int unitId) {
-        Tile tile = TileAtWorldPosition(worldPoint);
+    public void UpdateOccupancy(Vector2 tilePosition, int unitId) {
+        Tile tile = TileAtTileCoords(tilePosition);
         if (tile == null) {
             Debug.LogError("Tried to move person to null tile");
             return;
@@ -200,8 +197,8 @@ public class Level : MonoBehaviour {
         MoveUnit(tile, unitId);
     }
 
-    public bool IsOccupied(Vector2 worldPoint) {
-        Tile tile = TileAtWorldPosition(worldPoint);
+    public bool IsOccupied(Vector2 tilePosition) {
+        Tile tile = TileAtTileCoords(tilePosition);
         if (tile == null) {
             // It's occupied by water or hull, I guess
             return true;
@@ -235,21 +232,20 @@ public class Level : MonoBehaviour {
         return TileAtTileCoords(WorldToTilePosition(worldPoint));
     }
 
-    public Vector2[] FindPath(Vector2 start, Vector2 finish)
+    // Note, returned coordinates are in local space
+    public Vector2[] FindPath(Vector2 startTilePos, Vector2 finishTilePos)
     {
-        Vector2 localStart = new Vector2(start.x - transform.position.x, start.y - transform.position.y);
-        Vector2 startTile = WorldToTilePosition(start);
-        Vector2 finishTile = WorldToTilePosition(finish);
+        Vector2 localStart = TileToLocalPosition(startTilePos);
 
-        if (!isTilePassable(startTile)) {
+        if (!isTilePassable(startTilePos)) {
             return new Vector2[] { localStart };
         }
 
         List<Vector2> queue = new List<Vector2>();
-        queue.Add(startTile);
+        queue.Add(startTilePos);
 
         Dictionary<int, Vector2> previousVisited = new Dictionary<int, Vector2>();
-        previousVisited.Add(TilePositionToTileId(startTile), start);
+        previousVisited.Add(TilePositionToTileId(startTilePos), startTilePos);
 
         while (queue.Count > 0) {
             Vector2 tilePosition = queue[0];
@@ -258,8 +254,8 @@ public class Level : MonoBehaviour {
             int tileX = (int)tilePosition.x;
             int tileY = (int)tilePosition.y;
 
-            if (tileX == (int)finishTile.x &&
-                tileY == (int)finishTile.y) {
+            if (tileX == (int)finishTilePos.x &&
+                tileY == (int)finishTilePos.y) {
                 break;
             }
             
@@ -286,16 +282,16 @@ public class Level : MonoBehaviour {
             }
         }
 
-        if (!previousVisited.ContainsKey(TilePositionToTileId(finishTile))) {
+        if (!previousVisited.ContainsKey(TilePositionToTileId(finishTilePos))) {
             // Didn't find a path
             return new Vector2[] { localStart };
         }
 
         // Reconstruct the path from the finish
         List<Vector2> tilePath = new List<Vector2>();
-        tilePath.Add(finishTile);
-        Vector2 pathTile = finishTile;
-        while ((int)pathTile.x != (int)startTile.x || (int)pathTile.y != (int)startTile.y) {
+        tilePath.Add(finishTilePos);
+        Vector2 pathTile = finishTilePos;
+        while ((int)pathTile.x != (int)startTilePos.x || (int)pathTile.y != (int)startTilePos.y) {
             bool gotten = previousVisited.TryGetValue(TilePositionToTileId(pathTile), out pathTile);
             if (!gotten) {
                 // Error
@@ -320,9 +316,14 @@ public class Level : MonoBehaviour {
         return tileY * levelMap.GetLength(1) + tileX;
     }
 
-    private Vector2 WorldToTilePosition(Vector2 worldPoint) {
-        float localX = (worldPoint.x - this.transform.position.x) * pixelsPerUnit;
-        float localY = - (worldPoint.y - this.transform.position.y) * pixelsPerUnit;
+    public Vector2 WorldToTilePosition(Vector2 worldPoint) {
+        Vector2 localPosition = new Vector2(worldPoint.x - this.transform.position.x, worldPoint.y - this.transform.position.y);
+        return LocalToTilePosition(localPosition);
+    }
+
+    public Vector2 LocalToTilePosition(Vector2 localPoint) {
+        float localX = localPoint.x * pixelsPerUnit;
+        float localY = - localPoint.y * pixelsPerUnit;
         float tileX = Mathf.Floor(localX / (tileSize.x * tileScale.x));
         float tileY = Mathf.Floor(localY / (tileSize.y * tileScale.y));
 
