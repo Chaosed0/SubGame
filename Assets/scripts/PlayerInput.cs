@@ -41,7 +41,7 @@ public class PlayerInput : MonoBehaviour {
             Tile tile = level.TileAtWorldPosition(new Vector2(worldPoint.x, worldPoint.y));
 
             // Make sure the tile is valid
-            if (tile != null && tile.CanUnitMoveHere(selectedPathfinder.unitId)) {
+            if (tile != null) {
                 selectedPathfinder.StartPathing(worldPoint);
             }
         }

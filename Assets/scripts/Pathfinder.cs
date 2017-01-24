@@ -48,15 +48,20 @@ public class Pathfinder : MonoBehaviour {
 	}
 
     public void StartPathing(Vector2 destination) {
-        this.destination = destination;
-        this.pathIndex = 0;
-        this.isPathing = true;
-
-        level.UpdateOccupancy(level.WorldToTilePosition(destination), this.unitId);
         path = level.FindPath(level.WorldToTilePosition(this.transform.position), level.WorldToTilePosition(destination));
 
-        if (onPathStarted != null) {
-            onPathStarted.Invoke();
+        Tile tile = level.TileAtTileCoords(level.LocalToTilePosition(path[path.Length-1]));
+        if (tile.CanUnitMoveHere(unitId)) {
+            level.UpdateOccupancy(level.LocalToTilePosition(path[path.Length - 1]), this.unitId);
+
+            this.destination = destination;
+            this.pathIndex = 0;
+            this.isPathing = true;
+
+            if (onPathStarted != null)
+            {
+                onPathStarted.Invoke();
+            }
         }
     }
 

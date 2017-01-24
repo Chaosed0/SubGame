@@ -90,13 +90,18 @@ public class Unit : MonoBehaviour {
         }
         else if(state == State.Panicked)
         {
+            audioBubble.makingRepairSound = false;
             animateObject.playingPanic = true;
             animateObject.playingIdle = false;
+            animateObject.playingRepair = false;
         }
         else if (state == State.Moving)
         {
             Vector2 movement = pathfinder.GetMovement();
+            audioBubble.makingRepairSound = false;
             animateObject.playingIdle = false;
+            animateObject.playingPanic = false;
+            animateObject.playingRepair = false;
             if (Mathf.Abs(movement.y) > Mathf.Abs(movement.x))
             {
                 animateObject.playingWalk = false;
@@ -104,6 +109,7 @@ public class Unit : MonoBehaviour {
             }
             else
             {
+                audioBubble.makingRepairSound = false;
                 animateObject.playingWalk = true;
                 animateObject.playingClimb = false;
             }

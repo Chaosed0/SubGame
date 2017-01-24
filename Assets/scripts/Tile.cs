@@ -19,6 +19,6 @@ public class Tile : MonoBehaviour {
     public TileType tileType = TileType.Normal;
 
     public bool CanUnitMoveHere(int unitId) {
-        return occupyingUnitId < 0 && traversable;
+        return occupyingUnitId < 0;
     }
 }

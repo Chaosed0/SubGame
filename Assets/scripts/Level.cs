@@ -254,9 +254,18 @@ public class Level : MonoBehaviour {
             int tileX = (int)tilePosition.x;
             int tileY = (int)tilePosition.y;
 
+
             if (tileX == (int)finishTilePos.x &&
                 tileY == (int)finishTilePos.y) {
+                // Special case - the final tile is an impassable tile, make the last tile searched the destination
+                if (!isTilePassable(tilePosition)) {
+                    finishTilePos = previousVisited[TilePositionToTileId(tilePosition)];
+                }
                 break;
+            }
+
+            if (!isTilePassable(tilePosition)) {
+                continue;
             }
             
             Vector2 rightTile = new Vector2(tileX + 1, tileY);
@@ -264,19 +273,19 @@ public class Level : MonoBehaviour {
             Vector2 downTile = new Vector2(tileX, tileY + 1);
             Vector2 upTile = new Vector2(tileX, tileY - 1);
 
-            if (isTilePassable(rightTile) && !previousVisited.ContainsKey(TilePositionToTileId(rightTile))) {
+            if (IsTileInBounds(rightTile) && !previousVisited.ContainsKey(TilePositionToTileId(rightTile))) {
                 queue.Add(rightTile);
                 previousVisited.Add(TilePositionToTileId(rightTile), tilePosition);
             }
-            if (isTilePassable(leftTile) && !previousVisited.ContainsKey(TilePositionToTileId(leftTile))) {
+            if (IsTileInBounds(leftTile) && !previousVisited.ContainsKey(TilePositionToTileId(leftTile))) {
                 queue.Add(leftTile);
                 previousVisited.Add(TilePositionToTileId(leftTile), tilePosition);
             }
-            if (isTilePassable(downTile) && !previousVisited.ContainsKey(TilePositionToTileId(downTile))) {
+            if (IsTileInBounds(downTile) && !previousVisited.ContainsKey(TilePositionToTileId(downTile))) {
                 queue.Add(downTile);
                 previousVisited.Add(TilePositionToTileId(downTile), tilePosition);
             }
-            if (isTilePassable(upTile) && !previousVisited.ContainsKey(TilePositionToTileId(upTile))) {
+            if (IsTileInBounds(upTile) && !previousVisited.ContainsKey(TilePositionToTileId(upTile))) {
                 queue.Add(upTile);
                 previousVisited.Add(TilePositionToTileId(upTile), tilePosition);
             }
@@ -346,7 +355,7 @@ public class Level : MonoBehaviour {
         return new Vector2(worldX, worldY);
     }
 
-    private Tile TileAtTileCoords(Vector2 tilePosition) {
+    public Tile TileAtTileCoords(Vector2 tilePosition) {
         int tileX = (int)tilePosition.x;
         int tileY = (int)tilePosition.y;
 
